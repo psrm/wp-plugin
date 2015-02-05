@@ -22,6 +22,8 @@ class PSRM
 
 	public static $components;
 	public static $CPT;
+	public static $gravity_forms;
+
 	public static $third_party;
 	public static $images;
 	public static $scripts;
@@ -36,6 +38,8 @@ class PSRM
 
 		self::$components   = self::$dir . '/components';
 		self::$CPT          = self::$components . '/CPT';
+		self::$gravity_forms = self::$components . '/gravity_forms';
+
 		self::$third_party  = self::$dir . '/third-party';
 		self::$images       = self::$url . '/resources/images';
 		self::$scripts      = self::$url . '/resources/scripts/build';
@@ -47,7 +51,10 @@ class PSRM
 	function initPlugin()
 	{
 		require_once(self::$CPT . '/equipment.php');
+		require_once(self::$gravity_forms . '/filters.php');
+
 		new CPT\equipment\CPT();
+		new gravity_forms\filters();
 	}
 
 }
