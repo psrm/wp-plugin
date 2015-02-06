@@ -2,7 +2,7 @@
 /*
 Plugin Name:    PSRM Mandatory
 Description:    Mandatory plugin for features essential to http://psrm.org.
-Version:        1.0.0
+Version:        1.1.0
 Author:         PSRMA
 Text Domain:    psrm
 License:        GPL2
