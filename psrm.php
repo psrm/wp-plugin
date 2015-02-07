@@ -18,6 +18,7 @@ class PSRM
 	public static $components;
 	public static $CPT;
 	public static $gravity_forms;
+	public static $google_analytics;
 
 	public static $third_party;
 	public static $images;
@@ -34,6 +35,7 @@ class PSRM
 		self::$components   = self::$dir . '/components';
 		self::$CPT          = self::$components . '/CPT';
 		self::$gravity_forms = self::$components . '/gravity_forms';
+		self::$google_analytics = self::$components . '/google_analytics';
 
 		self::$third_party  = self::$dir . '/third-party';
 		self::$images       = self::$url . '/resources/images';
@@ -47,9 +49,11 @@ class PSRM
 	{
 		require_once(self::$CPT . '/equipment.php');
 		require_once(self::$gravity_forms . '/filters.php');
+		require_once(self::$google_analytics . '/ga.php');
 
 		new CPT\equipment\CPT();
 		new gravity_forms\filters();
+		new google_analytics\GA();
 	}
 
 }
