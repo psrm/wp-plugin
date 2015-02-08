@@ -4,9 +4,21 @@ namespace psrm\google_analytics;
 
 class GA
 {
+	public $cookie_name;
 	function __construct()
 	{
-		add_action('wp_head', array($this, 'tracking_code'));
+		$this->cookie_name = 'psrm_ga_exclude';
+		add_action('admin_init', array($this, 'tracking_exclusion_cookie'));
+		if(!isset($_COOKIE[$this->cookie_name]) && strpos($_SERVER['HTTP_HOST'], 'dev') === false && $_SERVER['SERVER_NAME'] != 'staging.psrm.org') {
+			add_action( 'wp_head', array( $this, 'tracking_code' ) );
+		}
+	}
+
+	function tracking_exclusion_cookie()
+	{
+		if ( !isset($_COOKIE[$this->cookie_name])) {
+			setcookie( $this->cookie_name, 1, time() + 3600 * 24 * 365, COOKIEPATH, COOKIE_DOMAIN, false );
+		}
 	}
 
 	function tracking_code()
