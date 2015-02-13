@@ -15,10 +15,9 @@ class PSRM
 	public static $dir;
 	public static $url;
 
-	public static $components;
-	public static $CPT;
-	public static $gravity_forms;
-	public static $google_analytics;
+	public static $controllers;
+	public static $models;
+	public static $views;
 
 	public static $third_party;
 	public static $images;
@@ -32,10 +31,9 @@ class PSRM
 		self::$dir  = WPMU_PLUGIN_DIR . '/' . self::$slug;
 		self::$url  = WPMU_PLUGIN_URL . '/' . self::$slug;
 
-		self::$components   = self::$dir . '/components';
-		self::$CPT          = self::$components . '/CPT';
-		self::$gravity_forms = self::$components . '/gravity_forms';
-		self::$google_analytics = self::$components . '/google_analytics';
+		self::$controllers   = self::$dir . '/classes/controllers';
+		self::$models        = self::$dir . '/classes/models';
+		self::$views         = self::$dir . '/classes/views';
 
 		self::$third_party  = self::$dir . '/third-party';
 		self::$images       = self::$url . '/resources/images';
@@ -47,13 +45,13 @@ class PSRM
 
 	function initPlugin()
 	{
-		require_once(self::$CPT . '/equipment.php');
-		require_once(self::$gravity_forms . '/filters.php');
-		require_once(self::$google_analytics . '/ga.php');
+		require_once(self::$controllers . '/Equipment.php');
+		require_once(self::$controllers . '/GravityFormFilters.php');
+		require_once(self::$controllers . '/GoogleAnalytics.php');
 
-		new CPT\equipment\CPT();
-		new gravity_forms\filters();
-		new google_analytics\GA();
+		new controllers\Equipment();
+		new controllers\GravityFormFilters();
+		new controllers\GoogleAnalytics();
 	}
 
 }

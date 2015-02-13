@@ -1,9 +1,9 @@
 <?php
 
-namespace psrm\CPT\equipment;
+namespace psrm\controllers;
 use psrm\PSRM;
 
-class CPT
+class Equipment
 {
 	static $trains;
 	function __construct()

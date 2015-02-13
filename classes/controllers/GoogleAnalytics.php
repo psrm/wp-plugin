@@ -1,8 +1,8 @@
 <?php
 
-namespace psrm\google_analytics;
+namespace psrm\controllers;
 
-class GA
+class GoogleAnalytics
 {
 	public $cookie_name;
 	function __construct()

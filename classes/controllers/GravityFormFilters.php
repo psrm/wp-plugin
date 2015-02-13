@@ -1,8 +1,8 @@
 <?php
 
-namespace psrm\gravity_forms;
+namespace psrm\controllers;
 
-class filters
+class GravityFormFilters
 {
 	function __construct()
 	{
