@@ -45,6 +45,7 @@ class PSRM
 
 	function initPlugin()
 	{
+		require_once('vendor/autoload.php');
 		require_once(self::$controllers . '/Equipment.php');
 		require_once(self::$controllers . '/GravityFormFilters.php');
 		require_once(self::$controllers . '/GoogleAnalytics.php');
