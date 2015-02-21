@@ -19,6 +19,9 @@ class PSRM
 	public static $models;
 	public static $views;
 
+	public static $scripts;
+	public static $styles;
+
 	public static $interfaces;
 	public static $utils;
 	public static $settingsKey;
@@ -34,11 +37,16 @@ class PSRM
 		self::$models        = self::$dir . '/classes/models';
 		self::$views         = self::$dir . '/classes/views';
 
+		self::$scripts       = self::$url . '/resources/scripts';
+		self::$styles        = self::$url . '/resources/style';
+
 		self::$interfaces    = self::$dir . '/common/interfaces';
 		self::$utils         = self::$dir . '/common/utils';
 		self::$settingsKey   = self::$slug . '-settings';
 
 		$this->initPlugin();
+
+		add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
 	}
 
 	function initPlugin()
@@ -55,6 +63,12 @@ class PSRM
 		new controllers\Equipment();
 		new controllers\GravityFormFilters();
 		new controllers\GoogleAnalytics();
+	}
+
+	function enqueueScripts()
+	{
+		wp_enqueue_script(self::$slug . '-plugin-scripts', self::$scripts . '/scripts.min.js', ['jquery'], '1424536731');
+		wp_enqueue_style(self::$slug . '-plugin-styles', self::$styles . '/main.min.css', [], '1424536731');
 	}
 
 }
