@@ -19,10 +19,9 @@ class PSRM
 	public static $models;
 	public static $views;
 
-	public static $third_party;
-	public static $images;
-	public static $scripts;
-	public static $styles;
+	public static $interfaces;
+	public static $utils;
+	public static $settingsKey;
 
 
 	function __construct()
@@ -35,10 +34,9 @@ class PSRM
 		self::$models        = self::$dir . '/classes/models';
 		self::$views         = self::$dir . '/classes/views';
 
-		self::$third_party  = self::$dir . '/third-party';
-		self::$images       = self::$url . '/resources/images';
-		self::$scripts      = self::$url . '/resources/scripts/build';
-		self::$styles       = self::$url . '/resources/styles';
+		self::$interfaces    = self::$dir . '/common/interfaces';
+		self::$utils         = self::$dir . '/common/utils';
+		self::$settingsKey   = self::$slug . '-settings';
 
 		$this->initPlugin();
 	}
@@ -46,10 +44,14 @@ class PSRM
 	function initPlugin()
 	{
 		require_once('vendor/autoload.php');
+		require_once(self::$interfaces . '/AbstractSettingsModel.php');
+		require_once(self::$utils . '/Views.php');
+		require_once(self::$controllers . '/Settings.php');
 		require_once(self::$controllers . '/Equipment.php');
 		require_once(self::$controllers . '/GravityFormFilters.php');
 		require_once(self::$controllers . '/GoogleAnalytics.php');
 
+		new controllers\Settings();
 		new controllers\Equipment();
 		new controllers\GravityFormFilters();
 		new controllers\GoogleAnalytics();

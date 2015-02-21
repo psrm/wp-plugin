@@ -1,0 +1,35 @@
+<?php
+
+use psrm\PSRM;
+use psrm\common\utils\Views;
+
+$view = new Views(PSRM::$views);
+
+extract($vars);
+?>
+
+<div class="wrap">
+
+	<h2><?php echo $pageTitle; ?></h2>
+
+	<h2 class="nav-tab-wrapper">
+		<?php
+
+		foreach ($tabs as $tab_key => $tab_caption)
+		{
+			$active = $current_tab == $tab_key ? 'nav-tab-active' : '';
+			echo '<a class="nav-tab ' . $active . '" href="?page=' . $pageSlug . '&tab=' . $tab_key . '">' . $tab_caption . '</a>';
+		}
+		?>
+	</h2>
+
+	<form method="post" action="options.php">
+
+		<?php
+			settings_fields($settingsModel->getSettingsKey());
+			echo $view->render('settings-' . $current_tab, $vars);
+		?>
+
+	</form>
+
+</div>
