@@ -33,7 +33,7 @@ abstract class AbstractSettingsModel
 		}
 		else
 		{
-			$this->settingsKey = 'hji-' . $pluginSlug . '-settings';
+			$this->settingsKey = 'psrm-' . $pluginSlug . '-settings';
 		}
 
 		if (!empty($this->optionGroups))
