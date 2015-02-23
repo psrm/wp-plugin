@@ -45,12 +45,12 @@ class PSRM
 		self::$settingsKey   = self::$slug . '-settings';
 
 		$this->initPlugin();
-
-		add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
 	}
 
 	function initPlugin()
 	{
+		add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
+
 		require_once('vendor/autoload.php');
 		require_once(self::$interfaces . '/AbstractSettingsModel.php');
 		require_once(self::$utils . '/Views.php');
@@ -58,17 +58,24 @@ class PSRM
 		require_once(self::$controllers . '/Equipment.php');
 		require_once(self::$controllers . '/GravityFormFilters.php');
 		require_once(self::$controllers . '/GoogleAnalytics.php');
+		require_once(self::$controllers . '/DonationForm.php');
 
 		new controllers\Settings();
 		new controllers\Equipment();
 		new controllers\GravityFormFilters();
 		new controllers\GoogleAnalytics();
+		new controllers\DonationForm();
 	}
 
 	function enqueueScripts()
 	{
-		wp_enqueue_script(self::$slug . '-plugin-scripts', self::$scripts . '/scripts.min.js', ['jquery'], '1424536731');
 		wp_enqueue_style(self::$slug . '-plugin-styles', self::$styles . '/main.min.css', [], '1424536731');
+
+		wp_register_script(self::$slug . '-plugin-scripts', self::$scripts . '/scripts.min.js', ['jquery'], '1424536731');
+		wp_localize_script( self::$slug . '-plugin-scripts', 'psrm', [
+			'ajaxurl' => admin_url('admin-ajax.php'),
+		] );
+		wp_enqueue_script(self::$slug . '-plugin-scripts');
 	}
 
 }
