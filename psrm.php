@@ -29,6 +29,22 @@ class PSRM
 
 	function __construct()
 	{
+		$this->setConstants();
+		$this->setVariables();
+		$this->initPlugin();
+	}
+
+	function setConstants()
+	{
+		if(strpos($_SERVER['HTTP_HOST'], 'dev') !== false || $_SERVER['SERVER_NAME'] == 'staging.psrm.org') {
+			define( 'AUTHORIZE_NET_SANDBOX', true);
+		} else {
+			define('AUTHORIZE_NET_SANDBOX', false);
+		}
+	}
+
+	function setVariables()
+	{
 		self::$slug = basename( dirname( __FILE__ ) );
 		self::$dir  = WPMU_PLUGIN_DIR . '/' . self::$slug;
 		self::$url  = WPMU_PLUGIN_URL . '/' . self::$slug;
@@ -43,8 +59,6 @@ class PSRM
 		self::$interfaces    = self::$dir . '/common/interfaces';
 		self::$utils         = self::$dir . '/common/utils';
 		self::$settingsKey   = self::$slug . '-settings';
-
-		$this->initPlugin();
 	}
 
 	function initPlugin()
@@ -54,17 +68,18 @@ class PSRM
 		require_once('vendor/autoload.php');
 		require_once(self::$interfaces . '/AbstractSettingsModel.php');
 		require_once(self::$utils . '/Views.php');
+		require_once(self::$models . '/load.php');
 		require_once(self::$controllers . '/Settings.php');
 		require_once(self::$controllers . '/Equipment.php');
 		require_once(self::$controllers . '/GravityFormFilters.php');
 		require_once(self::$controllers . '/GoogleAnalytics.php');
-		require_once(self::$controllers . '/DonationForm.php');
+		require_once(self::$controllers . '/Donation.php');
 
 		new controllers\Settings();
 		new controllers\Equipment();
 		new controllers\GravityFormFilters();
 		new controllers\GoogleAnalytics();
-		new controllers\DonationForm();
+		new controllers\Donation();
 	}
 
 	function enqueueScripts()

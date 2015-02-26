@@ -12,11 +12,13 @@ var util       = require('gulp-util');              // Writing stuff
 // Create our paths to do stuff
 var paths = {
     scripts: [
-        'resources/scripts/_*.js'
+        'resources/scripts/components/*.js',
+        'resources/scripts/_*.js',
     ],
     jshint: [
         'gulpfile.js',
         'resources/scripts/*.js',
+        '!resources/scripts/components/*.js',
         '!resources/scripts/scripts.min.js',
     ],
     sass: 'resources/style/base.scss'
@@ -82,6 +84,7 @@ gulp.task('watch', function(){
 
     gulp.watch("resources/style/**/*.scss", ['sass']);              // Watch and run sass on changes
     gulp.watch("resources/scripts/_*.js", ['jshint', 'js']);        // Watch and run js on changes
+    gulp.watch("resources/scripts/components/*.js", ['jshint', 'js']);        // Watch and run js on changes
 
 });
 

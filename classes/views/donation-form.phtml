@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-primary btn-lg donation-button" data-toggle="modal" data-target=".bs-example-modal-sm">☺ Donate Today</button>
+<button type="button" class="btn btn-primary btn-lg donation-button" data-toggle="modal" data-target=".bs-example-modal-sm" onclick="ga('send', 'event', 'Donate Button', 'Click', 'Donation Page');">☺ Donate Today</button>
 
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-sm">
@@ -8,11 +8,11 @@
 				<div class="aligncenter">Make A One-Time Donation to Pacific Southwest Railway Museum</div>
 			</div>
 			<div class="modal-body">
-				<form class="anet-donation">
+				<form class="anet-donation" autocomplete="on">
 					<div class="form-group">
 						<label for="amount" class="control-label sr-only"">Amount:</label>
 						<div class="input-group">
-							<div class="input-group-addon">$</div>
+							<div class="input-group-addon fa fa-usd"></div>
 							<input type="text" class="form-control" id="amount" placeholder="Amount">
 							<div class="input-group-addon">USD</div>
 						</div>
@@ -20,20 +20,25 @@
 					<div class="form-group">
 						<label for="cc_num" class="control-label sr-only"">Credit Card Number:</label>
 						<div class="input-group">
-							<div class="input-group-addon glyphicon glyphicon-credit-card"></div>
-							<input type="text" class="form-control" id="cc_num" placeholder="Credit Card Number">
+							<div class="input-group-addon fa fa-credit-card"></div>
+							<input type="tel" class="form-control" id="cc_num" placeholder="Credit Card Number">
+						</div>
+						<label for="expiration" class="control-label sr-only"">Expiration:</label>
+						<div class="input-group expiration-group">
+							<div class="input-group-addon fa fa-calendar"></div>
+							<input type="tel" class="form-control" id="expiration" placeholder="MM/YYYY">
+						</div>
+						<label for="cvc" class="control-label sr-only"">CVC:</label>
+						<div class="input-group cvc-group">
+							<div class="input-group-addon fa fa-lock"></div>
+							<input type="tel" class="form-control" id="cvc" placeholder="CVC" autocomplete="off">
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="expiration" class="control-label sr-only"">Expiration:</label>
+						<label for="email" class="control-label sr-only"">Email:</label>
 						<div class="input-group">
-							<div class="input-group-addon glyphicon glyphicon-calendar"></div>
-							<input type="text" class="form-control" id="expiration" placeholder="MM/YY">
-						</div>
-						<label for="cvc" class="control-label sr-only"">CVC:</label>
-						<div class="input-group">
-							<div class="input-group-addon glyphicon glyphicon-lock"></div>
-							<input type="text" class="form-control" id="cvc" placeholder="CVC">
+							<div class="input-group-addon fa fa-envelope"></div>
+							<input type="text" class="form-control" id="email" placeholder="Email Address">
 						</div>
 					</div>
 					<hr/>
@@ -41,18 +46,19 @@
 					<div class="form-group">
 						<label for="name" class="control-label sr-only"">Name on Card:</label>
 						<div class="input-group">
-							<div class="input-group-addon glyphicon glyphicon-user"></div>
+							<div class="input-group-addon fa fa-user"></div>
 							<input type="text" class="form-control" id="name" placeholder="Name on Card">
 						</div>
 						<label for="address" class="control-label sr-only"">Address:</label>
 						<div class="input-group">
-							<div class="input-group-addon glyphicon glyphicon-envelope"></div>
+							<div class="input-group-addon fa fa-pencil"></div>
 							<input type="text" class="form-control" id="address" placeholder="Address">
 						</div>
 					</div>
 					<input type="submit" value="Make Donation" class="btn btn-primary">
 				</form>
 			</div>
+			<div class="modal-footer"></div>
 		</div>
 	</div>
 </div>

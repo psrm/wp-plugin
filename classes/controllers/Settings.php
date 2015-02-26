@@ -6,8 +6,6 @@ use psrm\models\Settings as SettingsModel;
 use psrm\common\utils\Views;
 use psrm\PSRM;
 
-require_once(PSRM::$models . '/Settings.php');
-
 class Settings
 {
 	private $model;
