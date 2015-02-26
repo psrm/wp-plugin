@@ -1,0 +1,30 @@
+<?php extract($vars); ?>
+
+<h3>Authorize.net Settings</h3>
+
+<table class='form-table'>
+	<tr>
+		<th scope="row">API Login ID:</th>
+
+		<td>
+			<input type='text' class='regular-text' id='authorize-net-api-id' value='<?php echo $settingsModel->getOption('authorize_net_api_id', $current_tab) ?>'
+			       name='<?php echo $settingsModel->getInputName('authorize_net_api_id', $current_tab) ?>' />
+
+		</td>
+
+	</tr>
+
+	<tr>
+		<th scope="row">Transaction Key</th>
+
+		<td>
+			<input type='text' class='regular-text' id='authorize-net-transaction-key' value='<?php echo $settingsModel->getOption('authorize_net_transaction_key', $current_tab) ?>'
+			       name='<?php echo $settingsModel->getInputName('authorize_net_transaction_key', $current_tab) ?>' />
+
+		</td>
+
+	</tr>
+
+</table>
+
+<?php submit_button(); ?>
