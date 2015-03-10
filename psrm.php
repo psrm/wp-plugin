@@ -74,12 +74,14 @@ class PSRM
 		require_once(self::$controllers . '/GravityFormFilters.php');
 		require_once(self::$controllers . '/GoogleAnalytics.php');
 		require_once(self::$controllers . '/Donation.php');
+		require_once(self::$controllers . '/ServiceAlerts.php');
 
 		new controllers\Settings();
 		new controllers\Equipment();
 		new controllers\GravityFormFilters();
 		new controllers\GoogleAnalytics();
 		new controllers\Donation();
+		new controllers\ServiceAlerts();
 	}
 
 	function enqueueScripts()
