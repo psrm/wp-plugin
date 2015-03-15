@@ -1,5 +1,24 @@
-Plugin Name:    PSRM Mandatory
-Description:    Mandatory plugin for features essential to http://psrm.org.
-Author:         PSRMA
-Text Domain:    psrm
-License:        GPL2
+# PSRM Plugin #
+## Mandatory plugin for features essential to https://www.psrm.org. ##
+### License:        GPL2 ###
+
+# Contribute #
+To help contribute, there are a few prerequisites:
+* PHP 5.5+
+* Node.js
+* Some kind of LAMP/LEMP/WAMP/MAMP stack
+
+After cloning the repository, run 
+```
+#!bash
+
+npm install
+```
+to install the Gulp task runner and its dependencies. If you plan to modify JS/CSS, don't forget to run
+
+```
+#!bash
+
+gulp
+```
+
