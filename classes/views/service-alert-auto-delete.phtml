@@ -1,0 +1,4 @@
+<div class="misc-pub-section service_alert_delete">
+	<span class="dashicons dashicons-trash"></span><label for="service_alert_delete_after">Delete After: </label>
+	<input type="text" id="service_alert_delete_after" name="service_alert_delete_after" size="2" maxlength="2" autocomplete="off" value="<?php echo isset($_REQUEST['post']) ? get_post_meta($_REQUEST['post'], 'service_alert_delete_after', true) : ''; ?>"/> Days
+</div>

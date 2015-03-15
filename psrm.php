@@ -68,25 +68,28 @@ class PSRM
 		require_once('vendor/autoload.php');
 		require_once(self::$interfaces . '/AbstractSettingsModel.php');
 		require_once(self::$utils . '/Views.php');
+		require_once(self::$utils . '/Cron.php');
 		require_once(self::$models . '/load.php');
 		require_once(self::$controllers . '/Settings.php');
 		require_once(self::$controllers . '/Equipment.php');
 		require_once(self::$controllers . '/GravityFormFilters.php');
 		require_once(self::$controllers . '/GoogleAnalytics.php');
 		require_once(self::$controllers . '/Donation.php');
+		require_once(self::$controllers . '/ServiceAlerts.php');
 
 		new controllers\Settings();
 		new controllers\Equipment();
 		new controllers\GravityFormFilters();
 		new controllers\GoogleAnalytics();
 		new controllers\Donation();
+		new controllers\ServiceAlerts();
 	}
 
 	function enqueueScripts()
 	{
-		wp_enqueue_style(self::$slug . '-plugin-styles', self::$styles . '/main.min.css', [], '1424536731');
+		wp_enqueue_style(self::$slug . '-plugin-styles', self::$styles . '/main.min.css', [], '1426382961');
 
-		wp_register_script(self::$slug . '-plugin-scripts', self::$scripts . '/scripts.min.js', ['jquery'], '1424536731');
+		wp_register_script(self::$slug . '-plugin-scripts', self::$scripts . '/scripts.min.js', ['jquery'], '1426382961');
 		wp_localize_script( self::$slug . '-plugin-scripts', 'psrm', [
 			'ajaxurl' => admin_url('admin-ajax.php'),
 		] );
