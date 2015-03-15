@@ -15,8 +15,11 @@ class ServiceAlerts
 		add_action('init', array($this, 'register_service_alert_post_type'));
 		add_filter('post_updated_messages', array($this, 'post_service_alert_updated_messages'));
 		add_filter('bulk_post_updated_messages', array($this, 'bulk_post_service_alert_updated_messages'), 10, 2);
+		add_action('post_submitbox_misc_actions', [$this, 'service_alert_auto_delete_submitbox']);
+		add_action('save_post_service_alerts', [$this, 'service_alert_auto_delete_update']);
+		add_action('psrm-daily-cron', [$this, 'service_alert_auto_delete']);
 	}
-	
+
 	function display_service_alerts()
 	{
 		echo $this->view->render('service-alert');
@@ -108,5 +111,39 @@ class ServiceAlerts
 
 		return $bulk_messages;
 
+	}
+
+	function service_alert_auto_delete_submitbox()
+	{
+		global $post;
+		if($post->post_type == 'service_alerts' && $post->post_status == 'publish') {
+			echo $this->view->render( 'service-alert-auto-delete' );
+		}
+	}
+
+	function service_alert_auto_delete_update($post_id)
+	{
+		global $post;
+		if(isset($_REQUEST['service_alert_delete_after']) && $post->post_date_gmt && $post->post_status == 'publish') {
+			$num_days = sanitize_text_field($_REQUEST['service_alert_delete_after']);
+			update_post_meta($post_id, 'service_alert_delete_after', $num_days);
+			update_post_meta($post_id, 'service_alert_delete_timestamp', strtotime($post->post_date_gmt) + (DAY_IN_SECONDS * $num_days));
+		}
+	}
+
+	function service_alert_auto_delete()
+	{
+		global $wpdb;
+
+		$posts_to_delete = $wpdb->get_results($wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'service_alert_delete_timestamp' AND meta_value < '%d'", time()), ARRAY_A);
+
+		foreach ((array) $posts_to_delete as $post)
+		{
+			$post_id = (int) $post['post_id'];
+			if (!$post_id) {
+				continue;
+			}
+			wp_delete_post($post_id, true);
+		}
 	}
 }

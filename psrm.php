@@ -68,6 +68,7 @@ class PSRM
 		require_once('vendor/autoload.php');
 		require_once(self::$interfaces . '/AbstractSettingsModel.php');
 		require_once(self::$utils . '/Views.php');
+		require_once(self::$utils . '/Cron.php');
 		require_once(self::$models . '/load.php');
 		require_once(self::$controllers . '/Settings.php');
 		require_once(self::$controllers . '/Equipment.php');
