@@ -14,7 +14,7 @@ class Cron
 	function create_daily_cron_schedule()
 	{
 		if(!wp_next_scheduled('psrm-daily-cron')) {
-			wp_schedule_event(strtotime('tomorrow 23:59'), 'daily', 'psrm-daily-cron');
+			wp_schedule_event(strtotime('today 08:00'), 'daily', 'psrm-daily-cron');
 		}
 	}
 }
