@@ -1,15 +1,15 @@
 <?php
 
-namespace psrm\google_analytics;
+namespace psrm\controllers;
 
-class GA
+class GoogleAnalytics
 {
 	public $cookie_name;
 	function __construct()
 	{
 		$this->cookie_name = 'psrm_ga_exclude';
 		add_action('admin_init', array($this, 'tracking_exclusion_cookie'));
-		if(!isset($_COOKIE[$this->cookie_name]) && strpos($_SERVER['HTTP_HOST'], 'dev') === false && $_SERVER['SERVER_NAME'] != 'staging.psrm.org') {
+		if(!isset($_COOKIE[$this->cookie_name])) {
 			add_action( 'wp_head', array( $this, 'tracking_code' ) );
 		}
 	}

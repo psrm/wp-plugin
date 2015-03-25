@@ -15,45 +15,85 @@ class PSRM
 	public static $dir;
 	public static $url;
 
-	public static $components;
-	public static $CPT;
-	public static $gravity_forms;
-	public static $google_analytics;
+	public static $controllers;
+	public static $models;
+	public static $views;
 
-	public static $third_party;
-	public static $images;
 	public static $scripts;
 	public static $styles;
 
+	public static $interfaces;
+	public static $utils;
+	public static $settingsKey;
+
 
 	function __construct()
+	{
+		$this->setConstants();
+		$this->setVariables();
+		$this->initPlugin();
+	}
+
+	function setConstants()
+	{
+		if(strpos($_SERVER['HTTP_HOST'], 'dev') !== false || $_SERVER['SERVER_NAME'] == 'staging.psrm.org') {
+			define( 'AUTHORIZE_NET_SANDBOX', true);
+		} else {
+			define('AUTHORIZE_NET_SANDBOX', false);
+		}
+	}
+
+	function setVariables()
 	{
 		self::$slug = basename( dirname( __FILE__ ) );
 		self::$dir  = WPMU_PLUGIN_DIR . '/' . self::$slug;
 		self::$url  = WPMU_PLUGIN_URL . '/' . self::$slug;
 
-		self::$components   = self::$dir . '/components';
-		self::$CPT          = self::$components . '/CPT';
-		self::$gravity_forms = self::$components . '/gravity_forms';
-		self::$google_analytics = self::$components . '/google_analytics';
+		self::$controllers   = self::$dir . '/classes/controllers';
+		self::$models        = self::$dir . '/classes/models';
+		self::$views         = self::$dir . '/classes/views';
 
-		self::$third_party  = self::$dir . '/third-party';
-		self::$images       = self::$url . '/resources/images';
-		self::$scripts      = self::$url . '/resources/scripts/build';
-		self::$styles       = self::$url . '/resources/styles';
+		self::$scripts       = self::$url . '/resources/scripts';
+		self::$styles        = self::$url . '/resources/style';
 
-		$this->initPlugin();
+		self::$interfaces    = self::$dir . '/common/interfaces';
+		self::$utils         = self::$dir . '/common/utils';
+		self::$settingsKey   = self::$slug . '-settings';
 	}
 
 	function initPlugin()
 	{
-		require_once(self::$CPT . '/equipment.php');
-		require_once(self::$gravity_forms . '/filters.php');
-		require_once(self::$google_analytics . '/ga.php');
+		add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
 
-		new CPT\equipment\CPT();
-		new gravity_forms\filters();
-		new google_analytics\GA();
+		require_once('vendor/autoload.php');
+		require_once(self::$interfaces . '/AbstractSettingsModel.php');
+		require_once(self::$utils . '/Views.php');
+		require_once(self::$utils . '/Cron.php');
+		require_once(self::$models . '/load.php');
+		require_once(self::$controllers . '/Settings.php');
+		require_once(self::$controllers . '/Equipment.php');
+		require_once(self::$controllers . '/GravityFormFilters.php');
+		require_once(self::$controllers . '/GoogleAnalytics.php');
+		require_once(self::$controllers . '/Donation.php');
+		require_once(self::$controllers . '/ServiceAlerts.php');
+
+		new controllers\Settings();
+		new controllers\Equipment();
+		new controllers\GravityFormFilters();
+		new controllers\GoogleAnalytics();
+		new controllers\Donation();
+		new controllers\ServiceAlerts();
+	}
+
+	function enqueueScripts()
+	{
+		wp_enqueue_style(self::$slug . '-plugin-styles', self::$styles . '/main.min.css', [], '1426382961');
+
+		wp_register_script(self::$slug . '-plugin-scripts', self::$scripts . '/scripts.min.js', ['jquery'], '1426382961');
+		wp_localize_script( self::$slug . '-plugin-scripts', 'psrm', [
+			'ajaxurl' => admin_url('admin-ajax.php'),
+		] );
+		wp_enqueue_script(self::$slug . '-plugin-scripts');
 	}
 
 }
