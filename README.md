@@ -1,6 +1,5 @@
 # PSRM Plugin #
 ## Mandatory plugin for features essential to https://www.psrm.org. ##
-### License:        GPL2 ###
 
 # Contribute #
 To help contribute, there are a few prerequisites:
@@ -10,15 +9,8 @@ To help contribute, there are a few prerequisites:
 * Some kind of LAMP/LEMP/WAMP/MAMP stack
 
 To get started, fork this repo to your account and clone the fork to your dev machine. After cloning the repository, run 
-```
-#!bash
+`npm install` to install the Gulp task runner and its dependencies. If you plan to modify JS/CSS, don't forget to run `gulp`
 
-npm install
-```
-to install the Gulp task runner and its dependencies. If you plan to modify JS/CSS, don't forget to run
-
-```
-#!bash
-
-gulp
-```
+PSRM Plugin is free software and is released under the terms
+of the GNU GPL version 3 or (at your option) any later version.
+See license.txt for more information.
