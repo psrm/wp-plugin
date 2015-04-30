@@ -2,7 +2,7 @@
 
 namespace psrm\models;
 
-use psrm\common\interfaces\AbstractSettingsModel;
+use psrm\interfaces\AbstractSettingsModel;
 use psrm\PSRM;
 
 class Settings extends AbstractSettingsModel

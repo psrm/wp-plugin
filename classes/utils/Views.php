@@ -5,7 +5,7 @@
  * of templates.
  */
 
-namespace psrm\common\utils;
+namespace psrm\utils;
 
 
 class Views

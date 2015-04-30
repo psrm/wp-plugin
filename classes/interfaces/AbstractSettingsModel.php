@@ -1,5 +1,5 @@
 <?php
-namespace psrm\common\interfaces;
+namespace psrm\interfaces;
 
 
 abstract class AbstractSettingsModel
