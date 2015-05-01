@@ -77,13 +77,6 @@ class PSRM
                 new $class_name();
             }
         }
-
-		/*new controllers\Settings();
-		new controllers\Equipment();
-		new controllers\GravityFormFilters();
-		new controllers\GoogleAnalytics();
-		new controllers\Donation();
-		new controllers\ServiceAlerts();*/
 	}
 
 	function enqueueScripts()
