@@ -1,9 +1,226 @@
-/*! vTicker 1.15
- http://richhollis.github.com/vticker/ | http://richhollis.github.com/vticker/license/ | based on Jubgits vTicker http://www.jugbit.com/jquery-vticker-vertical-news-ticker/ */
-(function(d){var n={speed:700,pause:4E3,showItems:1,mousePause:!0,height:0,animate:!0,margin:0,padding:0,startPaused:!1},c={moveUp:function(a,b){c.animate(a,b,"up")},moveDown:function(a,b){c.animate(a,b,"down")},animate:function(a,b,e){var c=a.itemHeight,f=a.options,k=a.element,g=k.children("ul"),l="up"===e?"li:first":"li:last";k.trigger("vticker.beforeTick");var m=g.children(l).clone(!0);0<f.height&&(c=g.children("li:first").height());c+=f.margin+2*f.padding;"down"===e&&g.css("top","-"+c+"px").prepend(m);
-    if(b&&b.animate){if(a.animating)return;a.animating=!0;g.animate("up"===e?{top:"-="+c+"px"}:{top:0},f.speed,function(){d(g).children(l).remove();d(g).css("top","0px");a.animating=!1;k.trigger("vticker.afterTick")})}else g.children(l).remove(),g.css("top","0px"),k.trigger("vticker.afterTick");"up"===e&&m.appendTo(g)},nextUsePause:function(){var a=d(this).data("state"),b=a.options;a.isPaused||2>a.itemCount||f.next.call(this,{animate:b.animate})},startInterval:function(){var a=d(this).data("state"),b=
-    this;a.intervalId=setInterval(function(){c.nextUsePause.call(b)},a.options.pause)},stopInterval:function(){var a=d(this).data("state");a&&(a.intervalId&&clearInterval(a.intervalId),a.intervalId=void 0)},restartInterval:function(){c.stopInterval.call(this);c.startInterval.call(this)}},f={init:function(a){f.stop.call(this);var b=jQuery.extend({},n);a=d.extend(b,a);var b=d(this),e={itemCount:b.children("ul").children("li").length,itemHeight:0,itemMargin:0,element:b,animating:!1,options:a,isPaused:a.startPaused?
-    !0:!1,pausedByCode:!1};d(this).data("state",e);b.css({overflow:"hidden",position:"relative"}).children("ul").css({position:"absolute",margin:0,padding:0}).children("li").css({margin:a.margin,padding:a.padding});isNaN(a.height)||0===a.height?(b.children("ul").children("li").each(function(){var a=d(this);a.height()>e.itemHeight&&(e.itemHeight=a.height())}),b.children("ul").children("li").each(function(){d(this).height(e.itemHeight)}),b.height((e.itemHeight+(a.margin+2*a.padding))*a.showItems+a.margin)):
-    b.height(a.height);var h=this;a.startPaused||c.startInterval.call(h);a.mousePause&&b.bind("mouseenter",function(){!0!==e.isPaused&&(e.pausedByCode=!0,c.stopInterval.call(h),f.pause.call(h,!0))}).bind("mouseleave",function(){if(!0!==e.isPaused||e.pausedByCode)e.pausedByCode=!1,f.pause.call(h,!1),c.startInterval.call(h)})},pause:function(a){var b=d(this).data("state");if(b){if(2>b.itemCount)return!1;b.isPaused=a;b=b.element;a?(d(this).addClass("paused"),b.trigger("vticker.pause")):(d(this).removeClass("paused"),
-    b.trigger("vticker.resume"))}},next:function(a){var b=d(this).data("state");if(b){if(b.animating||2>b.itemCount)return!1;c.restartInterval.call(this);c.moveUp(b,a)}},prev:function(a){var b=d(this).data("state");if(b){if(b.animating||2>b.itemCount)return!1;c.restartInterval.call(this);c.moveDown(b,a)}},stop:function(){d(this).data("state")&&c.stopInterval.call(this)},remove:function(){var a=d(this).data("state");a&&(c.stopInterval.call(this),a=a.element,a.unbind(),a.remove())}};d.fn.vTicker=function(a){if(f[a])return f[a].apply(this,
-    Array.prototype.slice.call(arguments,1));if("object"!==typeof a&&a)d.error("Method "+a+" does not exist on jQuery.vTicker");else return f.init.apply(this,arguments)}})(jQuery);
+/*
+ Vertical News Ticker 1.15
+
+ Original by: Tadas Juozapaitis ( kasp3rito [eta] gmail (dot) com )
+ http://www.jugbit.com/jquery-vticker-vertical-news-ticker/
+
+ Forked/Modified by: Richard Hollis @richhollis - richhollis.co.uk
+ */
+
+(function($){
+
+    var defaults = {
+        speed: 700,
+        pause: 4000,
+        showItems: 1,
+        mousePause: true,
+        height: 0,
+        animate: true,
+        margin: 0,
+        padding: 0,
+        startPaused: false
+    };
+
+    var internal = {
+
+        moveUp: function(state, attribs) {
+            internal.animate(state, attribs, 'up');
+        },
+
+        moveDown: function(state, attribs){
+            internal.animate(state, attribs, 'down');
+        },
+
+        animate: function(state, attribs, dir) {
+            var height = state.itemHeight;
+            var options = state.options;
+            var el = state.element;
+            var obj = el.children('ul');
+            var selector = (dir === 'up') ? 'li:first' : 'li:last';
+
+            el.trigger("vticker.beforeTick");
+
+            var clone = obj.children(selector).clone(true);
+
+            if(options.height > 0) height = obj.children('li:first').height();
+            height += (options.margin) + (options.padding*2); // adjust for margins & padding
+
+            if(dir==='down') obj.css('top', '-' + height + 'px').prepend(clone);
+
+            if(attribs && attribs.animate) {
+                if(state.animating) return;
+                state.animating = true;
+                var opts = (dir === 'up') ? {top: '-=' + height + 'px'} : {top: 0};
+                obj.animate(opts, options.speed, function() {
+                    $(obj).children(selector).remove();
+                    $(obj).css('top', '0px');
+                    state.animating = false;
+                    el.trigger("vticker.afterTick");
+                });
+            } else {
+                obj.children(selector).remove();
+                obj.css('top', '0px');
+                el.trigger("vticker.afterTick");
+            }
+            if(dir==='up') clone.appendTo(obj);
+        },
+
+        nextUsePause: function() {
+            var state = $(this).data('state');
+            var options = state.options;
+            if(state.isPaused || state.itemCount < 2) return;
+            methods.next.call( this, {animate:options.animate} );
+        },
+
+        startInterval: function() {
+            var state = $(this).data('state');
+            var options = state.options;
+            var initThis = this;
+            state.intervalId = setInterval(function(){
+                internal.nextUsePause.call( initThis );
+            }, options.pause);
+        },
+
+        stopInterval: function() {
+            var state = $(this).data('state');
+            if(!state) return;
+            if(state.intervalId) clearInterval(state.intervalId);
+            state.intervalId = undefined;
+        },
+
+        restartInterval: function() {
+            internal.stopInterval.call(this);
+            internal.startInterval.call(this);
+        }
+    };
+
+    var methods = {
+
+        init: function(options) {
+            // if init called second time then stop first, then re-init
+            methods.stop.call(this);
+            // init
+            var defaultsClone = jQuery.extend({}, defaults);
+            var options = $.extend(defaultsClone, options);
+            var el = $(this);
+            var state = {
+                itemCount: el.children('ul').children('li').length,
+                itemHeight: 0,
+                itemMargin: 0,
+                element: el,
+                animating: false,
+                options: options,
+                isPaused: (options.startPaused) ? true : false,
+                pausedByCode: false
+            };
+            $(this).data('state', state);
+
+            el.css({overflow: 'hidden', position: 'relative'})
+                .children('ul').css({position: 'absolute', margin: 0, padding: 0})
+                .children('li').css({margin: options.margin, padding: options.padding});
+
+            if(isNaN(options.height) || options.height === 0)
+            {
+                el.children('ul').children('li').each(function(){
+                    var current = $(this);
+                    if(current.height() > state.itemHeight)
+                        state.itemHeight = current.height();
+                });
+                // set the same height on all child elements
+                el.children('ul').children('li').each(function(){
+                    var current = $(this);
+                    current.height(state.itemHeight);
+                });
+                // set element to total height
+                var box = (options.margin) + (options.padding * 2);
+                el.height(((state.itemHeight + box) * options.showItems) + options.margin);
+            }
+            else
+            {
+                // set the preferred height
+                el.height(options.height);
+            }
+
+            var initThis = this;
+            if(!options.startPaused) {
+                internal.startInterval.call( initThis );
+            }
+
+            if(options.mousePause)
+            {
+                el.bind("mouseenter", function () {
+                    //if the automatic scroll is paused, don't change that.
+                    if (state.isPaused === true) return;
+                    state.pausedByCode = true;
+                    // stop interval
+                    internal.stopInterval.call( initThis );
+                    methods.pause.call( initThis, true );
+                }).bind("mouseleave", function () {
+                    //if the automatic scroll is paused, don't change that.
+                    if (state.isPaused === true && !state.pausedByCode) return;
+                    state.pausedByCode = false;
+                    methods.pause.call(initThis, false);
+                    // restart interval
+                    internal.startInterval.call( initThis );
+                });
+            }
+        },
+
+        pause: function(pauseState) {
+            var state = $(this).data('state');
+            if(!state) return undefined;
+            if(state.itemCount < 2) return false;
+            state.isPaused = pauseState;
+            var el = state.element;
+            if(pauseState) {
+                $(this).addClass('paused');
+                el.trigger("vticker.pause");
+            }
+            else {
+                $(this).removeClass('paused');
+                el.trigger("vticker.resume");
+            }
+        },
+
+        next: function(attribs) {
+            var state = $(this).data('state');
+            if(!state) return undefined;
+            if(state.animating || state.itemCount < 2) return false;
+            internal.restartInterval.call( this );
+            internal.moveUp(state, attribs);
+        },
+
+        prev: function(attribs) {
+            var state = $(this).data('state');
+            if(!state) return undefined;
+            if(state.animating || state.itemCount < 2) return false;
+            internal.restartInterval.call( this );
+            internal.moveDown(state, attribs);
+        },
+
+        stop: function() {
+            var state = $(this).data('state');
+            if(!state) return undefined;
+            internal.stopInterval.call( this );
+        },
+
+        remove: function() {
+            var state = $(this).data('state');
+            if(!state) return undefined;
+            internal.stopInterval.call( this );
+            var el = state.element;
+            el.unbind();
+            el.remove();
+        }
+    };
+
+    $.fn.vTicker = function( method ) {
+        if ( methods[method] ) {
+            return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+        } else if ( typeof method === 'object' || ! method ) {
+            return methods.init.apply( this, arguments );
+        } else {
+            $.error( 'Method ' +  method + ' does not exist on jQuery.vTicker' );
+        }
+    };
+})(jQuery);

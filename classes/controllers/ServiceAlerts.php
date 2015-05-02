@@ -3,7 +3,7 @@
 namespace psrm\controllers;
 
 use psrm\PSRM;
-use psrm\common\utils\Views;
+use psrm\utils\Views;
 
 class ServiceAlerts
 {
