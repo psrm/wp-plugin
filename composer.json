@@ -1,5 +1,6 @@
 {
   "require": {
-    "authorizenet/authorizenet": "~1.8"
+    "authorizenet/authorizenet": "~1.8",
+    "php-curl-class/php-curl-class": "~3.5"
   }
 }
