@@ -1,8 +1,6 @@
 <?php
 
-namespace psrm\common\utils;
-
-new Cron;
+namespace psrm\utils;
 
 class Cron
 {
