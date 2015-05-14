@@ -1,0 +1,34 @@
+<?php
+
+$hours = $details->opening_hours;
+
+?>
+<div class="daily-hours">
+	The museum is currently
+	<?php if($hours->open_now): ?>
+	<p class="museum-open">
+		OPEN
+	</p>
+	until <?php
+	$today = date('w');
+	foreach($hours->periods as $day)
+	{
+		if($today == $day->open->day) {
+			echo $day->close->time;
+		}
+	}
+	else: ?>
+	<p class="museum-closed">
+		CLOSED
+	</p>
+	until <?php
+	$today = date('w') != 6 ? date('w') : -1;
+		foreach($hours->periods as $day)
+		{
+			if($today < $day->open->day){
+				echo \psrm\controllers\GooglePlaces::$dowMap[$day->open->day] . ': ' . $day->open->time . ' - ' . $day->close->time;
+			}
+		}
+		?>
+	<?php endif; ?>
+</div>
