@@ -1,0 +1,14 @@
+.daily-hours {
+  text-align: center;
+  font-size: 2rem;
+  .museum-status {
+    font-size: 3rem;
+    font-weight: bold;
+    &.museum-open {
+      color: green;
+    }
+    &.museum-closed {
+      color: red;
+    }
+  }
+}
