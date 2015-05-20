@@ -1,12 +1,11 @@
 <?php
-
 $hours = $details->opening_hours;
-
+echo $args['before_widget']
 ?>
 <div class="daily-hours">
 	The museum is currently
 	<?php if($hours->open_now): ?>
-	<p class="museum-open">
+	<p class="museum-status museum-open">
 		OPEN
 	</p>
 	until <?php
@@ -14,11 +13,11 @@ $hours = $details->opening_hours;
 	foreach($hours->periods as $day)
 	{
 		if($today == $day->open->day) {
-			echo $day->close->time;
+			echo date('g:i a', strtotime($day->close->time));
 		}
 	}
 	else: ?>
-	<p class="museum-closed">
+	<p class="museum-status museum-closed">
 		CLOSED
 	</p>
 	until <?php
@@ -26,9 +25,10 @@ $hours = $details->opening_hours;
 		foreach($hours->periods as $day)
 		{
 			if($today < $day->open->day){
-				echo \psrm\controllers\GooglePlaces::$dowMap[$day->open->day] . ': ' . $day->open->time . ' - ' . $day->close->time;
+				echo \psrm\controllers\GooglePlaces::$dowMap[$day->open->day] . ': ' . date('g:i a', strtotime($day->open->time)) . ' - ' . date('g:i a', strtotime($day->close->time));
 			}
 		}
 		?>
 	<?php endif; ?>
 </div>
+<?php echo $args['after_widget']; ?>
