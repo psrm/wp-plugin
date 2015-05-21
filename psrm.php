@@ -70,6 +70,7 @@ class PSRM
 
 		require_once('autoload.php');
 
+		// Instantiate all controllers
         $dir = new \DirectoryIterator(self::$controllers);
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDot()) {
@@ -77,6 +78,9 @@ class PSRM
                 new $class_name();
             }
         }
+
+		// Instantiate Cron utility
+		new utils\Cron();
 	}
 
 	function enqueueScripts()
