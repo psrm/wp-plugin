@@ -21,11 +21,12 @@ echo $args['before_widget']
 		CLOSED
 	</p>
 	until <?php
-	$today = date('w') != 6 ? date('w') : -1;
 		foreach($hours->periods as $day)
 		{
-			if($today < $day->open->day){
+			$today = (date('w') == 6 && date('Hi') > $day->open->time) ? -1 : date('w');
+			if($today <= $day->open->day){
 				echo \psrm\controllers\GooglePlaces::$dowMap[$day->open->day] . ': ' . date('g:i a', strtotime($day->open->time)) . ' - ' . date('g:i a', strtotime($day->close->time));
+				break;
 			}
 		}
 		?>
