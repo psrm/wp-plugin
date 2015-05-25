@@ -13,9 +13,8 @@ class GooglePlaces {
 	function __construct() {
 		$this->model = new PlacesSettings();
 		self::$dowMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-		add_action('psrm-daily-cron', [$this, 'service_alert_auto_delete']);
 		add_action('psrm-hourly-cron', [$this, 'retrieve_latest_hours']);
-		new DailyHours();$this->retrieve_latest_hours();
+		new DailyHours();
 	}
 
 	function retrieve_latest_hours() {
