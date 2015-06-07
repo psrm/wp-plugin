@@ -16,24 +16,26 @@ echo $args['before_widget']
 			echo date('g:i a', strtotime($day->close->time));
 		}
 	}
-	else: ?>
-	<p class="museum-status museum-closed">CLOSED</p> until
-	<?php
-		foreach($hours->periods as $day)
-		{
-			if(date('w') == 6 && date('Hi') > $day->open->time) {
-				$today = -1;
-			} else {
-				$today = date('w');
-			}
-
-			if(date('Hi') > $day->close->time) {
-				$today++;
-			}
-
-			if($today <= $day->open->day){
-				echo \psrm\controllers\GooglePlaces::$dowMap[$day->open->day] . ': ' . date('g:i a', strtotime($day->open->time)) . ' - ' . date('g:i a', strtotime($day->close->time));
+	else:
+		foreach($hours->periods as $day) {
+			if ( date( 'w' ) == $day->open->day && date( 'Hi' ) <= $day->open->time ) {
+				echo '<p class="museum-status museum-open">OPEN TODAY</p> from ' . date( 'g:i a', strtotime( $day->open->time ) ) . ' - ' . date( 'g:i a', strtotime( $day->close->time ) );
 				break;
+			} else {
+				if ( date( 'w' ) == 6 && date( 'Hi' ) > $day->open->time ) {
+					$today = - 1;
+				} else {
+					$today = date( 'w' );
+				}
+
+				if ( date( 'Hi' ) > $day->close->time ) {
+					$today ++;
+				}
+
+				if ( $today <= $day->open->day ) {
+					echo '<p class="museum-status museum-closed">CLOSED</p> until ' . \psrm\controllers\GooglePlaces::$dowMap[ $day->open->day ] . ': ' . date( 'g:i a', strtotime( $day->open->time ) ) . ' - ' . date( 'g:i a', strtotime( $day->close->time ) );
+					break;
+				}
 			}
 		}
 		?>
