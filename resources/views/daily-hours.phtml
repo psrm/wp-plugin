@@ -3,12 +3,10 @@ $hours = $details->opening_hours;
 echo $args['before_widget']
 ?>
 <div class="daily-hours">
-	The museum is currently
+	The museum is
 	<?php if($hours->open_now): ?>
-	<p class="museum-status museum-open">
-		OPEN
-	</p>
-	until <?php
+		currently <p class="museum-status museum-open">OPEN</p> until
+	<?php
 	$today = date('w');
 	foreach($hours->periods as $day)
 	{
@@ -18,7 +16,7 @@ echo $args['before_widget']
 	}
 	else:
 		foreach($hours->periods as $day) {
-			if ( date( 'w' ) == $day->open->day && date( 'Hi' ) <= $day->open->time ) {
+			if ( date( 'w' ) == $day->open->day && date( 'Hi' ) <= $day->close->time ) {
 				echo '<p class="museum-status museum-open">OPEN TODAY</p> from ' . date( 'g:i a', strtotime( $day->open->time ) ) . ' - ' . date( 'g:i a', strtotime( $day->close->time ) );
 				break;
 			} else {
@@ -33,7 +31,7 @@ echo $args['before_widget']
 				}
 
 				if ( $today <= $day->open->day ) {
-					echo '<p class="museum-status museum-closed">CLOSED</p> until ' . \psrm\controllers\GooglePlaces::$dowMap[ $day->open->day ] . ': ' . date( 'g:i a', strtotime( $day->open->time ) ) . ' - ' . date( 'g:i a', strtotime( $day->close->time ) );
+					echo 'currently <p class="museum-status museum-closed">CLOSED</p> until ' . \psrm\controllers\GooglePlaces::$dowMap[ $day->open->day ] . ': ' . date( 'g:i a', strtotime( $day->open->time ) ) . ' - ' . date( 'g:i a', strtotime( $day->close->time ) );
 					break;
 				}
 			}
