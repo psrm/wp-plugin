@@ -17,13 +17,20 @@ echo $args['before_widget']
 		}
 	}
 	else: ?>
-	<p class="museum-status museum-closed">
-		CLOSED
-	</p>
-	until <?php
+	<p class="museum-status museum-closed">CLOSED</p> until
+	<?php
 		foreach($hours->periods as $day)
 		{
-			$today = (date('w') == 6 && date('Hi') > $day->open->time) ? -1 : date('w');
+			if(date('w') == 6 && date('Hi') > $day->open->time) {
+				$today = -1;
+			} else {
+				$today = date('w');
+			}
+
+			if(date('Hi') > $day->close->time) {
+				$today++;
+			}
+
 			if($today <= $day->open->day){
 				echo \psrm\controllers\GooglePlaces::$dowMap[$day->open->day] . ': ' . date('g:i a', strtotime($day->open->time)) . ' - ' . date('g:i a', strtotime($day->close->time));
 				break;
