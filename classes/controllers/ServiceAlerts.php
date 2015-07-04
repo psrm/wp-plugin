@@ -44,9 +44,15 @@ class ServiceAlerts
 
 	function display_service_alerts()
 	{
-		echo $this->view->render('service-alert');
+        $args = [
+            'post_type' => 'service_alerts',
+            'posts_per_page' => -1,
+        ];
+        $service_alert = new \WP_Query($args);
+
+		echo $this->view->render('service-alert', array('service_alert' => $service_alert));
 	}
-	
+
 	function register_service_alert_post_type()
 	{
 		$labels = array(
@@ -91,7 +97,7 @@ class ServiceAlerts
 
 		register_post_type( 'service_alerts', $args );
 	}
-	
+
 	function post_service_alert_updated_messages($messages)
 	{
 		global $post;
