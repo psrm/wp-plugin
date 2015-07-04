@@ -1,15 +1,16 @@
-<?php if($service_alert->have_posts()): ?>
+<?php if ($service_alert->have_posts()): ?>
 
-	<div class="psrm-service-alerts" id="psrm-service-marquee">
-	<ul>
-	<?php while($service_alert->have_posts()): $service_alert->the_post(); ?>
-        <?php $term = get_the_terms(get_the_ID(), 'alert_categories'); ?>
-		<li><a href="<?php the_permalink(); ?>">
-			<?php echo get_the_terms(get_the_ID(), 'alert_categories')[0]->name . ': '; the_title('<strong>', '</strong>'); ?>
-		</a></li>
-	<?php endwhile; ?>
-	<?php wp_reset_postdata(); ?>
-	</ul>
-	</div>
+    <div class="psrm-service-alerts" id="psrm-service-marquee">
+        <ul>
+            <?php while ($service_alert->have_posts()): $service_alert->the_post(); ?>
+                <?php $term = get_the_terms(get_the_ID(), 'alert_categories'); ?>
+                <li><a href="<?php the_permalink(); ?>">
+                        <?php echo get_the_terms(get_the_ID(), 'alert_categories')[0]->name . ': ';
+                        the_title('<strong>', '</strong>'); ?>
+                    </a></li>
+            <?php endwhile; ?>
+            <?php wp_reset_postdata(); ?>
+        </ul>
+    </div>
 
 <?php endif; ?>
