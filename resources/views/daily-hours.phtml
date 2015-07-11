@@ -1,6 +1,6 @@
 <?php
 $hours = $details->opening_hours;
-echo $args['before_widget']
+echo $args[ 'before_widget' ]
 ?>
 	<div class="daily-hours">
 		The museum is
@@ -14,18 +14,20 @@ echo $args['before_widget']
 				}
 			}
 		else:
+			$day_of_week  = date( 'w' );
+			$current_hour = date( 'Hi' );
 			foreach ( $hours->periods as $day ) {
-				if ( date( 'w' ) == $day->open->day && date( 'Hi' ) <= $day->close->time ) {
+				if ( $day_of_week == $day->open->day && $current_hour <= $day->close->time ) {
 					echo '<p class="museum-status museum-open">OPEN TODAY</p> from ' . date( 'g:i a', strtotime( $day->open->time ) ) . ' - ' . date( 'g:i a', strtotime( $day->close->time ) );
 					break;
 				} else {
-					if ( date( 'w' ) == 6 && date( 'Hi' ) > $day->open->time ) {
+					if ( $day_of_week == 6 && $current_hour > $day->open->time ) {
 						$today = - 1;
 					} else {
-						$today = date( 'w' );
+						$today = $day_of_week;
 					}
 
-					if ( date( 'Hi' ) > $day->close->time ) {
+					if ( $current_hour > $day->close->time ) {
 						$today ++;
 					}
 
@@ -38,4 +40,4 @@ echo $args['before_widget']
 			?>
 		<?php endif; ?>
 	</div>
-<?php echo $args['after_widget']; ?>
+<?php echo $args[ 'after_widget' ]; ?>
