@@ -1,3 +1,6 @@
 jQuery(document).ready(function($){
-    $('.psrm-service-alerts').vTicker();
+    var serviceAlerts = $('.psrm-service-alerts');
+    if(serviceAlerts.length) {
+        serviceAlerts.vTicker();
+    }
 });

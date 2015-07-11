@@ -2,7 +2,7 @@
 
 namespace psrm\models;
 
-use psrm\common\interfaces\AbstractSettingsModel;
+use psrm\interfaces\AbstractSettingsModel;
 use psrm\PSRM;
 
 class Settings extends AbstractSettingsModel
@@ -11,6 +11,7 @@ class Settings extends AbstractSettingsModel
 
 	protected $optionGroups = array(
 		'donations' => 'Donations',
+		'google-places' => 'Google Places',
 	);
 
 	public function __construct()

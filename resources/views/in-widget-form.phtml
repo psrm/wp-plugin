@@ -1,0 +1,51 @@
+<?php
+$instance = wp_parse_args(
+    ( array )$instance,
+    array(
+        'title' => '',
+        'text' => '',
+        'widgetwidth' => ''
+    )
+);
+
+if (!isset($instance['boxstyle']))
+    $instance['boxstyle'] = null;
+
+if (!isset($instance['customcss']))
+    $instance['customcss'] = '';
+?>
+<p>
+    <label for="<?php echo $t->get_field_id('widgetwidth'); ?>"><?php _e('Widget Width'); ?></label>
+    <select id="<?php echo $t->get_field_id('widgetwidth'); ?>" name="<?php echo $t->get_field_name('widgetwidth'); ?>">
+        <option <?php selected($instance['widgetwidth'], 'col-sm-12'); ?>
+            value="col-sm-12"><?php _e('Full Width'); ?></option>
+        <option <?php selected($instance['widgetwidth'], 'col-sm-11'); ?>
+            value="col-sm-11"><?php _e('11/12 Width'); ?></option>
+        <option <?php selected($instance['widgetwidth'], 'col-sm-10'); ?>
+            value="col-sm-10"><?php _e('10/12 Width'); ?></option>
+        <option <?php selected($instance['widgetwidth'], 'col-sm-9'); ?>
+            value="col-sm-9"><?php _e('9/12 Width (3/4)'); ?></option>
+        <option <?php selected($instance['widgetwidth'], 'col-sm-8'); ?>
+            value="col-sm-8"><?php _e('8/12 Width (2/3)'); ?></option>
+        <option <?php selected($instance['widgetwidth'], 'col-sm-7'); ?>
+            value="col-sm-7"><?php _e('7/12 Width'); ?></option>
+        <option <?php selected($instance['widgetwidth'], 'col-sm-6'); ?>
+            value="col-sm-6"><?php _e('6/12 Width (1/2)'); ?></option>
+        <option <?php selected($instance['widgetwidth'], 'col-sm-5'); ?>
+            value="col-sm-5"><?php _e('5/12 Width'); ?></option>
+        <option <?php selected($instance['widgetwidth'], 'col-sm-4'); ?>
+            value="col-sm-4"><?php _e('4/12 Width (1/3)'); ?></option>
+        <option <?php selected($instance['widgetwidth'], 'col-sm-3'); ?>
+            value="col-sm-3"><?php _e('3/12 Width (1/4)'); ?></option>
+        <option <?php selected($instance['widgetwidth'], 'col-sm-2'); ?>
+            value="col-sm-2"><?php _e('2/12 Width'); ?></option>
+        <option <?php selected($instance['widgetwidth'], 'col-sm-1'); ?>
+            value="col-sm-1"><?php _e('1/12 Width'); ?></option>
+        <option <?php selected($instance['widgetwidth'], ''); ?> value=""><?php _e('No Column Class'); ?></option>
+    </select>
+</p>
+<p>
+    <label for="<?php echo $t->get_field_id('customcss'); ?>"><?php _e('Custom CSS'); ?></label>
+    <input type="text" name="<?php echo $t->get_field_name('customcss'); ?>"
+           id="<?php echo $t->get_field_id('customcss'); ?>" value="<?php echo $instance['customcss']; ?>"/>
+</p>

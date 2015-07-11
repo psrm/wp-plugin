@@ -3,7 +3,7 @@
 namespace psrm\controllers;
 
 use psrm\PSRM;
-use psrm\common\utils\Views;
+use psrm\utils\Views;
 
 class ServiceAlerts
 {
@@ -13,6 +13,7 @@ class ServiceAlerts
 		$this->view = new Views(PSRM::$views);
 		add_shortcode(PSRM::$slug . '-service-alerts', [$this, 'display_service_alerts']);
 		add_action('init', array($this, 'register_service_alert_post_type'));
+		add_action( 'init', [ $this, 'register_taxonomies' ] );
 		add_filter('post_updated_messages', array($this, 'post_service_alert_updated_messages'));
 		add_filter('bulk_post_updated_messages', array($this, 'bulk_post_service_alert_updated_messages'), 10, 2);
 		add_action('post_submitbox_misc_actions', [$this, 'service_alert_auto_delete_submitbox']);
@@ -20,11 +21,38 @@ class ServiceAlerts
 		add_action('psrm-daily-cron', [$this, 'service_alert_auto_delete']);
 	}
 
-	function display_service_alerts()
-	{
-		echo $this->view->render('service-alert');
+	function register_taxonomies() {
+		register_taxonomy(
+			'alert_categories',
+			'service_alerts',
+			array(
+				'labels'       => array(
+					'name'          => 'Alert Types',
+					'singular_name' => 'Alert Type',
+					'all_items'     => 'All Alert Types',
+					'edit_item'     => 'Edit Alert Types',
+					'view_item'     => 'View Alert Types',
+					'add_new_item'  => 'Add New Alert Type',
+					'not_found'     => 'No Alert Types Found',
+					'search_items'  => 'Search Alert Types',
+				),
+				'hierarchical' => true,
+			)
+		);
 	}
-	
+
+
+    function display_service_alerts()
+    {
+        $args = [
+            'post_type' => 'service_alerts',
+            'posts_per_page' => -1,
+        ];
+        $service_alert = new \WP_Query($args);
+
+        echo $this->view->render('service-alert', array('service_alert' => $service_alert));
+    }
+
 	function register_service_alert_post_type()
 	{
 		$labels = array(
@@ -69,7 +97,7 @@ class ServiceAlerts
 
 		register_post_type( 'service_alerts', $args );
 	}
-	
+
 	function post_service_alert_updated_messages($messages)
 	{
 		global $post;

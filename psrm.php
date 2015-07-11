@@ -15,6 +15,8 @@ class PSRM
 	public static $dir;
 	public static $url;
 
+    public static $classes;
+
 	public static $controllers;
 	public static $models;
 	public static $views;
@@ -49,15 +51,16 @@ class PSRM
 		self::$dir  = WPMU_PLUGIN_DIR . '/' . self::$slug;
 		self::$url  = WPMU_PLUGIN_URL . '/' . self::$slug;
 
+        self::$classes       = self::$dir . '/classes';
 		self::$controllers   = self::$dir . '/classes/controllers';
 		self::$models        = self::$dir . '/classes/models';
-		self::$views         = self::$dir . '/classes/views';
+        self::$interfaces    = self::$dir . '/classes/interfaces';
+        self::$utils         = self::$dir . '/classes/utils';
 
 		self::$scripts       = self::$url . '/resources/scripts';
 		self::$styles        = self::$url . '/resources/style';
+		self::$views         = self::$dir . '/resources/views';
 
-		self::$interfaces    = self::$dir . '/common/interfaces';
-		self::$utils         = self::$dir . '/common/utils';
 		self::$settingsKey   = self::$slug . '-settings';
 	}
 
@@ -65,31 +68,26 @@ class PSRM
 	{
 		add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
 
-		require_once('vendor/autoload.php');
-		require_once(self::$interfaces . '/AbstractSettingsModel.php');
-		require_once(self::$utils . '/Views.php');
-		require_once(self::$utils . '/Cron.php');
-		require_once(self::$models . '/load.php');
-		require_once(self::$controllers . '/Settings.php');
-		require_once(self::$controllers . '/Equipment.php');
-		require_once(self::$controllers . '/GravityFormFilters.php');
-		require_once(self::$controllers . '/GoogleAnalytics.php');
-		require_once(self::$controllers . '/Donation.php');
-		require_once(self::$controllers . '/ServiceAlerts.php');
+		require_once('autoload.php');
 
-		new controllers\Settings();
-		new controllers\Equipment();
-		new controllers\GravityFormFilters();
-		new controllers\GoogleAnalytics();
-		new controllers\Donation();
-		new controllers\ServiceAlerts();
+		// Instantiate all controllers
+        $dir = new \DirectoryIterator(self::$controllers);
+        foreach ($dir as $fileinfo) {
+            if (!$fileinfo->isDot()) {
+                $class_name = 'psrm\controllers\\' . str_replace('.php', '', $fileinfo->getFilename());
+                new $class_name();
+            }
+        }
+
+		// Instantiate Cron utility
+		new utils\Cron();
 	}
 
 	function enqueueScripts()
 	{
-		wp_enqueue_style(self::$slug . '-plugin-styles', self::$styles . '/main.min.css', [], '1426382961');
+		wp_enqueue_style(self::$slug . '-plugin-styles', self::$styles . '/main.min.css', [], '1430489675');
 
-		wp_register_script(self::$slug . '-plugin-scripts', self::$scripts . '/scripts.min.js', ['jquery'], '1426382961');
+		wp_register_script(self::$slug . '-plugin-scripts', self::$scripts . '/scripts.min.js', ['jquery'], '1430489675');
 		wp_localize_script( self::$slug . '-plugin-scripts', 'psrm', [
 			'ajaxurl' => admin_url('admin-ajax.php'),
 		] );

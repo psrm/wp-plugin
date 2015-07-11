@@ -3,7 +3,7 @@
 namespace psrm\controllers;
 
 use psrm\models\Settings as SettingsModel;
-use psrm\common\utils\Views;
+use psrm\utils\Views;
 use psrm\PSRM;
 
 class Settings
