@@ -21,7 +21,7 @@ echo $args[ 'before_widget' ]
 					echo '<p class="museum-status museum-open">OPEN TODAY</p> from ' . date( 'g:i a', strtotime( $day->open->time ) ) . ' - ' . date( 'g:i a', strtotime( $day->close->time ) );
 					break;
 				} else {
-					if ( $day_of_week == 6 && $current_hour > $day->open->time ) {
+					if ( $day_of_week == 6 && $current_hour > $day->close->time ) {
 						$today = - 1;
 					} else {
 						$today = $day_of_week;
