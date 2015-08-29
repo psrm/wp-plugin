@@ -1,17 +1,17 @@
-jQuery(function($){
-    $('input#cc_num').keypress(function(){
+jQuery(function ($) {
+    $('input#cc_num').keypress(function () {
         $(this).payment('formatCardNumber');
     });
 
-    $('input#expiration').keypress(function(){
+    $('input#expiration').keypress(function () {
         $(this).payment('formatCardExpiry');
     });
 
-    $('input#cvc').keypress(function(){
+    $('input#cvc').keypress(function () {
         $(this).payment('formatCardCVC');
     });
 
-    $('.anet-donation').submit(function(e){
+    $('.anet-donation').submit(function (e) {
         e.preventDefault();
 
         // Clear any previous warnings
@@ -36,10 +36,10 @@ jQuery(function($){
                 cvc: $cvc.val(),
                 email: $('#email').val(),
             },
-            function(data){
+            function (data) {
                 var button = $('input[type="submit"][clicked="true"]');
                 data = JSON.parse(data);
-                if(data.success) {
+                if (data.success) {
                     button.val('Success!');
                     $('.modal-footer').html(data.message + data.analytics);
                 } else {
@@ -84,10 +84,12 @@ jQuery(function($){
         );
     });
 
-    function insertError(element, errorIcon, amount){
+    function insertError(element, errorIcon, amount) {
         amount = typeof amount !== 'undefined';
         element.parent().addClass('has-error has-feedback');
         errorIcon.insertAfter(element);
-        amount ? errorIcon.css('right', '50px') : '';
+        if (amount) {
+            errorIcon.css('right', '50px');
+        }
     }
 });
