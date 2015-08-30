@@ -12,12 +12,14 @@ var util       = require('gulp-util');              // Writing stuff
 // Create our paths to do stuff
 var paths = {
     scripts: [
+        'bower_components/Sortable/Sortable.js',
         'resources/scripts/components/*.js',
         'resources/scripts/_*.js',
     ],
     jshint: [
         'gulpfile.js',
         'resources/scripts/*.js',
+        '!bower_components/Sortable/Sortable.js',
         '!resources/scripts/components/*.js',
         '!resources/scripts/scripts.min.js',
     ],
