@@ -27,4 +27,22 @@
 
 </table>
 
+	<h3>Donation Amounts</h3>
+
+	<ul class="donation-amounts" id="editable">
+		<?php if ( $donations = $settingsModel->getOption( 'donation_amounts', $current_tab ) ):
+			$donation_option_name = $settingsModel->getInputName( 'donation_amounts', $current_tab );
+			foreach ( $donations as $amount ): ?>
+				<li><input type="hidden"
+				           name="<?php echo $donation_option_name; ?>[]"
+				           value="<?php echo $amount; ?>"><span title="Drag to reposition" class="drag-handle">&#9776;</span><?php echo $amount; ?>
+					<i class="js-remove" title="Click to remove">✖</i></li>
+			<?php endforeach; ?>
+		<?php endif; ?>
+	</ul>
+	<label for="add_amount">Add Amount</label> <input
+	id="add_amount"><input type="hidden" id="add_amount_name"
+	                       value="<?php echo $settingsModel->getInputName( 'donation_amounts', $current_tab ); ?>"><?php submit_button( 'Add', 'secondary', 'add_amount_button', false ); ?>
+
+
 <?php submit_button(); ?>

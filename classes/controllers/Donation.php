@@ -8,10 +8,10 @@ use psrm\models\Donation as DonationSettings;
 
 class Donation
 {
-	private $model;
-	private $view;
+	protected $model;
+	protected $view;
 
-	function __construct()
+	public function __construct()
 	{
 		$this->model = new DonationSettings();
 		$this->view = new Views(PSRM::$views);
@@ -20,12 +20,12 @@ class Donation
 		add_action('wp_ajax_nopriv_process_donation', [$this, 'process_donation']);
 	}
 
-	function display_donation_form()
+	public function display_donation_form()
 	{
 		return $this->view->render('donation-form');
 	}
 
-	function process_donation()
+	public function process_donation()
 	{
 		$transaction = new \AuthorizeNetAIM;
 		$transaction->setSandbox(AUTHORIZE_NET_SANDBOX);
@@ -78,7 +78,11 @@ class Donation
 				'responseText' => $response->response_reason_text,
 			];
 		}
+
 		echo json_encode($output);
-		die();
+
+		exit;
 	}
+
+//	public function
 }
