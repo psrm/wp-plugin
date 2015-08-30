@@ -41,8 +41,12 @@
 		<?php endif; ?>
 	</ul>
 	<label for="add_amount">Add Amount</label> <input
-	id="add_amount"><input type="hidden" id="add_amount_name"
+	type="number" id="add_amount"><input type="hidden" id="add_amount_name"
 	                       value="<?php echo $settingsModel->getInputName( 'donation_amounts', $current_tab ); ?>"><?php submit_button( 'Add', 'secondary', 'add_amount_button', false ); ?>
 
-
+<p><input type="checkbox" id="allow_custom_name" name="<?php echo $settingsModel->getInputName('allow_custom_amount', $current_tab); ?>" <?php echo $settingsModel->getOption('allow_custom_amount', $current_tab) ? 'checked' : '';?> />
+<label for="allow_custom_name">Allow customer to specify their own donation amount.</label>
+<br>
+<label for="custom_donation_floor">Do not allow custom donations below: $</label><input type="number" id="custom_donation_floor" name="<?php echo $settingsModel->getInputName('custom_donation_floor', $current_tab); ?>" value="<?php echo $settingsModel->getOption('custom_donation_floor', $current_tab); ?>">
+</p>
 <?php submit_button(); ?>
