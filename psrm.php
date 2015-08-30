@@ -67,6 +67,7 @@ class PSRM
 	function initPlugin()
 	{
 		add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueueAdminScripts' ] );
 
 		require_once('autoload.php');
 
@@ -92,6 +93,11 @@ class PSRM
 			'ajaxurl' => admin_url('admin-ajax.php'),
 		] );
 		wp_enqueue_script(self::$slug . '-plugin-scripts');
+	}
+
+	public function enqueueAdminScripts() {
+		wp_enqueue_style( self::$slug . '-plugin-admin-styles', self::$styles . '/admin.min.css', [ ], '1440911064' );
+		wp_enqueue_script( self::$slug . '-plugin-admin-scripts', self::$scripts . '/admin.min.js', [ 'jquery' ], '1440911064' );
 	}
 
 }

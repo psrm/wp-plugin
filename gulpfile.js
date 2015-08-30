@@ -11,8 +11,11 @@ var util       = require('gulp-util');              // Writing stuff
 
 // Create our paths to do stuff
 var paths = {
-    scripts: [
+    adminScripts: [
         'bower_components/Sortable/Sortable.js',
+        'resources/scripts/admin_*.js'
+    ],
+    frontScripts: [
         'resources/scripts/components/*.js',
         'resources/scripts/_*.js',
     ],
@@ -22,8 +25,10 @@ var paths = {
         '!bower_components/Sortable/Sortable.js',
         '!resources/scripts/components/*.js',
         '!resources/scripts/scripts.min.js',
+        '!resources/scripts/admin.min.js'
     ],
-    sass: 'resources/style/base.scss'
+    frontSass: 'resources/style/front/base.scss',
+    adminSass: 'resources/style/admin/admin.scss'
 };
 
 
@@ -32,13 +37,22 @@ var paths = {
 //      Compile all CSS for the site
 //
 //////////////////////////////////////////////////////////////////////
-gulp.task('sass', function (){
-    gulp.src(paths.sass)                                              // Build Our Stylesheet
+gulp.task('frontSass', function (){
+    gulp.src(paths.frontSass)                                              // Build Our Stylesheet
         .pipe(sass({style: 'compressed', errLogToConsole: true}))     // Compile scss
         .pipe(rename('main.min.css'))                                 // Rename it
         .pipe(minifycss())                                            // Minify the CSS
         .pipe(gulp.dest('resources/style/'));                         // Set the destination to assets/css
-    util.log(util.colors.green('Sass compiled & minified'));          // Output to terminal
+    util.log(util.colors.green('Front-end Sass compiled & minified'));          // Output to terminal
+});
+
+gulp.task('adminSass', function (){
+    gulp.src(paths.adminSass)                                              // Build Our Stylesheet
+        .pipe(sass({style: 'compressed', errLogToConsole: true}))     // Compile scss
+        .pipe(rename('admin.min.css'))                                 // Rename it
+        .pipe(minifycss())                                            // Minify the CSS
+        .pipe(gulp.dest('resources/style/'));                         // Set the destination to assets/css
+    util.log(util.colors.green('Admin Sass compiled & minified'));          // Output to terminal
 });
 
 
@@ -59,13 +73,22 @@ gulp.task('jshint', function() {
 //      Combine and Minify JS
 //
 //////////////////////////////////////////////////////////////////////
-gulp.task('js', ['jshint'], function() {
-    gulp.src(paths.scripts)
+gulp.task('frontJS', ['jshint'], function() {
+    gulp.src(paths.frontScripts)
         .pipe(concat('scripts.js'))
         .pipe(rename({suffix: '.min'}))
         .pipe(uglify())
         .pipe(gulp.dest('resources/scripts/'));
-    util.log(util.colors.green('Javascript compiled and minified'));
+    util.log(util.colors.green('Front-end Javascript compiled and minified'));
+});
+
+gulp.task('adminJS', ['jshint'], function() {
+    gulp.src(paths.adminScripts)
+        .pipe(concat('admin.js'))
+        .pipe(rename({suffix: '.min'}))
+        //.pipe(uglify())
+        .pipe(gulp.dest('resources/scripts/'));
+    util.log(util.colors.green('Admin Javascript compiled and minified'));
 });
 
 
@@ -84,14 +107,15 @@ gulp.task('watch', function(){
         util.log(util.colors.yellow('PHTML file changed' + ' (' + file.path + ')'));
     });
 
-    gulp.watch("resources/style/**/*.scss", ['sass']);              // Watch and run sass on changes
-    gulp.watch("resources/scripts/_*.js", ['jshint', 'js']);        // Watch and run js on changes
-    gulp.watch("resources/scripts/components/*.js", ['jshint', 'js']);        // Watch and run js on changes
+    gulp.watch("resources/style/**/*.scss", ['frontSass', 'adminSass']);              // Watch and run sass on changes
+    gulp.watch("resources/scripts/_*.js", ['jshint', 'frontJS']);        // Watch and run js on changes
+    gulp.watch("resources/scripts/admin_*.js", ['jshint', 'adminJS']);        // Watch and run js on changes
+    gulp.watch("resources/scripts/components/*.js", ['jshint', 'frontJS']);        // Watch and run js on changes
 
 });
 
 if(process.env.deploy){
-    gulp.task('default', ['sass', 'js']);
+    gulp.task('default', ['frontSass', 'adminSass', 'frontJS', 'adminJS']);
 } else {
-    gulp.task('default', ['sass', 'jshint', 'js', 'watch']);
+    gulp.task('default', ['frontSass', 'adminSass', 'jshint', 'frontJS', 'adminJS', 'watch']);
 }
