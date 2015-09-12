@@ -22,7 +22,11 @@ class Donation
 
 	public function display_donation_form()
 	{
-		return $this->view->render('donation-form');
+		return $this->view->render( 'donation-form', array(
+			'donation_amounts'      => $this->model->getOption( 'donation_amounts', 'donations' ),
+			'allow_custom_amount'   => $this->model->getOption( 'allow_custom_amount', 'donations' ),
+			'custom_donation_floor' => $this->model->getOption( 'custom_donation_floor', 'donations' )
+		) );
 	}
 
 	public function process_donation()
@@ -36,13 +40,13 @@ class Donation
 				'exp_date' => $_POST['expire_date'],
 				'email' => $_POST['email'],
 				'card_code' => $_POST['cvc'],
-				/*'first_name' => $_POST['x_first_name'],
+				'first_name' => $_POST['x_first_name'],
 				'last_name' => $_POST['x_last_name'],
 				'address' => $_POST['x_address'],
 				'city' => $_POST['x_city'],
 				'state' => $_POST['x_state'],
 				'country' => $_POST['x_country'],
-				'zip' => $_POST['x_zip'],*/
+				'zip' => $_POST['x_zip']
 			)
 		);
 		$response = $transaction->authorizeAndCapture();

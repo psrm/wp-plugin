@@ -86,7 +86,7 @@ gulp.task('adminJS', ['jshint'], function() {
     gulp.src(paths.adminScripts)
         .pipe(concat('admin.js'))
         .pipe(rename({suffix: '.min'}))
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest('resources/scripts/'));
     util.log(util.colors.green('Admin Javascript compiled and minified'));
 });

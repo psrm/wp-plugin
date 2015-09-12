@@ -11,6 +11,14 @@ jQuery(function ($) {
         $(this).payment('formatCardCVC');
     });
 
+    $('.donation_amount_form').change(function () {
+        if ($(this).val() == 'custom') {
+            $('.custom-donation-group').removeClass('hidden');
+        } else {
+            $('.custom-donation-group').addClass('hidden');
+        }
+    });
+
     $('.anet-donation').submit(function (e) {
         e.preventDefault();
 
@@ -20,7 +28,8 @@ jQuery(function ($) {
         $('.modal-footer').empty();
 
         // Gather required selectors
-        var $amount = $('#amount'),
+        var $amount = $('input:radio[name=amount]:checked'),
+            $customAmount = $('input[name=custom_amount]'),
             $ccNum = $('#cc_num'),
             $expiration = $('#expiration'),
             $cvc = $('#cvc');
@@ -31,6 +40,7 @@ jQuery(function ($) {
             {
                 action: 'process_donation',
                 amount: $amount.val(),
+                customAmount: $customAmount.val(),
                 cc_num: $ccNum.val(),
                 expire_date: $expiration.val(),
                 cvc: $cvc.val(),
