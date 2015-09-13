@@ -31,14 +31,27 @@ class Donation
 
 	public function process_donation()
 	{
-		$data = $this->doValidation($_POST);
+		$data = $this->doValidation( $_POST, $this->model->getOption( 'custom_donation_floor', 'donations' ) );
 
-		if($data['success']) {
+		$donation_amounts = $this->model->getOption( 'donation_amounts', 'donations' );
+
+		if ( $data[ 'success' ] &&
+		     (
+			     $data[ 'result' ][ 'amount' ] == 'custom' ||
+			     isset( $donation_amounts[ $data[ 'result' ][ 'amount' ] ] )
+		     )
+		) {
+			if ( $data[ 'result' ][ 'amount' ] == 'custom' ) {
+				$donation_amount = $data[ 'result' ][ 'customAmount' ];
+			} else {
+				$donation_amount = $donation_amounts[ $data[ 'result' ][ 'amount' ] ];
+			}
+
 			$transaction = new \AuthorizeNetAIM;
 			$transaction->setSandbox( AUTHORIZE_NET_SANDBOX );
 			$transaction->setFields(
 				array(
-					'amount'     => $data[ 'result' ][ 'amount' ],
+					'amount'     => $donation_amount,
 					'card_num'   => $data[ 'result' ][ 'cc_num' ],
 					'exp_date'   => $data[ 'result' ][ 'expire_date' ],
 					'email'      => $data[ 'result' ][ 'email' ],
@@ -99,14 +112,14 @@ class Donation
 		exit;
 	}
 
-	protected function doValidation( $data ) {
+	protected function doValidation( $data, $donation_min ) {
 		$gump = new \GUMP();
 
 		$data = $gump->sanitize( $data );
 
 		$gump->validation_rules( [
 			'amount'       => 'required',
-			'customAmount' => 'numeric',
+			'customAmount' => 'numeric|min_numeric,' . $donation_min,
 			'email'        => 'required|valid_email',
 			'cc_num'       => 'required|valid_cc',
 			'expire_date'  => 'required',
