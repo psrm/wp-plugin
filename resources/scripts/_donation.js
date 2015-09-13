@@ -32,7 +32,14 @@ jQuery(function ($) {
             $customAmount = $('input[name=custom_amount]'),
             $ccNum = $('#cc_num'),
             $expiration = $('#expiration'),
-            $cvc = $('#cvc');
+            $cvc = $('#cvc'),
+            $email = $('#email'),
+            $first_name = $('#first_name'),
+            $last_name = $('#last_name'),
+            $address = $('#address'),
+            $city = $('#city'),
+            $state = $('#state'),
+            $zip = $('#zip');
 
         // Submit payment information and handle response
         $.post(
@@ -44,7 +51,13 @@ jQuery(function ($) {
                 cc_num: $ccNum.val(),
                 expire_date: $expiration.val(),
                 cvc: $cvc.val(),
-                email: $('#email').val(),
+                email: $email.val(),
+                x_first_name: $first_name.val(),
+                x_last_name: $last_name.val(),
+                x_address: $address.val(),
+                x_city: $city.val(),
+                x_state: $state.val(),
+                x_zip: $zip.val()
             },
             function (data) {
                 var button = $('input[type="submit"][clicked="true"]');

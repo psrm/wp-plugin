@@ -31,61 +31,107 @@ class Donation
 
 	public function process_donation()
 	{
-		$transaction = new \AuthorizeNetAIM;
-		$transaction->setSandbox(AUTHORIZE_NET_SANDBOX);
-		$transaction->setFields(
-			array(
-				'amount' => $_POST['amount'],
-				'card_num' => $_POST['cc_num'],
-				'exp_date' => $_POST['expire_date'],
-				'email' => $_POST['email'],
-				'card_code' => $_POST['cvc'],
-				'first_name' => $_POST['x_first_name'],
-				'last_name' => $_POST['x_last_name'],
-				'address' => $_POST['x_address'],
-				'city' => $_POST['x_city'],
-				'state' => $_POST['x_state'],
-				'country' => $_POST['x_country'],
-				'zip' => $_POST['x_zip']
-			)
-		);
-		$response = $transaction->authorizeAndCapture();
-		if ($response->approved) {
+		$data = $this->doValidation($_POST);
 
-			$trans = [
-				'id' => $response->transaction_id,
-				'revenue' => $response->amount,
-			];
-			$items = [
-				[
-					'name' => 'Donation of $' . $response->amount,
-					'sku' => 'DONATE' . $response->amount,
-					'category' => 'Donation',
-					'price' => $response->amount,
-					'qty' => 1,
-				]
-			];
+		if($data['success']) {
+			$transaction = new \AuthorizeNetAIM;
+			$transaction->setSandbox( AUTHORIZE_NET_SANDBOX );
+			$transaction->setFields(
+				array(
+					'amount'     => $data[ 'result' ][ 'amount' ],
+					'card_num'   => $data[ 'result' ][ 'cc_num' ],
+					'exp_date'   => $data[ 'result' ][ 'expire_date' ],
+					'email'      => $data[ 'result' ][ 'email' ],
+					'card_code'  => $data[ 'result' ][ 'cvc' ],
+					'first_name' => $data[ 'result' ][ 'x_first_name' ],
+					'last_name'  => $data[ 'result' ][ 'x_last_name' ],
+					'address'    => $data[ 'result' ][ 'x_address' ],
+					'city'       => $data[ 'result' ][ 'x_city' ],
+					'state'      => $data[ 'result' ][ 'x_state' ],
+					'zip'        => $data[ 'result' ][ 'x_zip' ]
+				)
+			);
+			$response = $transaction->authorizeAndCapture();
+			if ( $response->approved ) {
 
-			$output = [
-				'success' => true,
-				'message' => 'Thank you for you donation!',
-				'transactionId' => $response->transaction_id,
-				'analytics' => $this->view->render('ecommerce-ga-donation', compact('trans', 'items')),
-			];
+				$trans = [
+					'id'      => $response->transaction_id,
+					'revenue' => $response->amount,
+				];
+				$items = [
+					[
+						'name'     => 'Donation of $' . $response->amount,
+						'sku'      => 'DONATE' . $response->amount,
+						'category' => 'Donation',
+						'price'    => $response->amount,
+						'qty'      => 1,
+					]
+				];
 
+				$output = [
+					'success'       => true,
+					'message'       => 'Thank you for you donation!',
+					'transactionId' => $response->transaction_id,
+					'analytics'     => $this->view->render( 'ecommerce-ga-donation', compact( 'trans', 'items' ) ),
+				];
+
+			} else {
+				$output = [
+					'success'            => false,
+					'message'            => 'Your donation could not be processed.',
+					'responseReasonCode' => $response->response_reason_code,
+					'responseCode'       => $response->response_code,
+					'responseText'       => $response->response_reason_text,
+				];
+			}
 		} else {
 			$output = [
 				'success' => false,
-				'message' => 'Your donation could not be processed.',
-				'responseReasonCode' => $response->response_reason_code,
-				'responseCode' => $response->response_code,
-				'responseText' => $response->response_reason_text,
+			    'message' => 'Form validation failed.',
+			    'responseReasonCode' => 0,
+			    'responseCode' => 0,
+			    'responseText' => $data['result']
 			];
 		}
 
 		echo json_encode($output);
 
 		exit;
+	}
+
+	protected function doValidation( $data ) {
+		$gump = new \GUMP();
+
+		$data = $gump->sanitize( $data );
+
+		$gump->validation_rules( [
+			'amount'       => 'required',
+			'customAmount' => 'numeric',
+			'email'        => 'required|valid_email',
+			'cc_num'       => 'required|valid_cc',
+			'expire_date'  => 'required',
+			'cvc'          => 'required|min_len,3|max_len,4',
+			'x_first_name' => 'required',
+			'x_last_name'  => 'required',
+			'x_address'    => 'required|street_address',
+			'x_city'       => 'required',
+			'x_state'      => 'required|exact_len,2',
+			'x_zip'        => 'required|exact_len,5'
+		] );
+
+		$validated_data = $gump->run( $data );
+
+		if ( $validated_data === false ) {
+			return [
+				'success' => false,
+				'result'  => $gump->get_readable_errors( true )
+			];
+		} else {
+			return [
+				'success' => true,
+				'result'  => $validated_data
+			];
+		}
 	}
 
 //	public function
