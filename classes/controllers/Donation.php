@@ -72,7 +72,7 @@ class Donation {
 
 				$output = [
 					'success'       => true,
-					'message'       => 'Thank you for you donation!',
+					'message'       => 'Thank you for your donation!',
 					'transactionId' => $response->id,
 					'analytics'     => $this->view->render( 'ecommerce-ga-donation', compact( 'trans', 'items' ) ),
 				];
@@ -93,7 +93,7 @@ class Donation {
 		} else {
 			$output = [
 				'success'            => false,
-				'message'            => 'Form validation failed. The errors are listed below. Correct the errors and resubmit.',
+				'message'            => 'Form validation failed. The error(s) are listed below. Correct the errors and resubmit.',
 				'responseReasonCode' => 0,
 				'responseCode'       => 0,
 				'responseText'       => $data[ 'result' ]
