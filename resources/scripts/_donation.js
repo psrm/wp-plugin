@@ -7,45 +7,49 @@ jQuery( function ( $ ) {
         }
     } );
 
-    var handler = StripeCheckout.configure( {
-        key: psrm.stripe_pk,
-        image: psrm.logo,
-        locale: 'auto',
-        token: function ( token ) {
-            console.log( token );
-            $( '.donation-modal' ).modal( 'show' );
-            $( '.modal-body' ).text( 'Your information has been validated. Now processing your donation. Please wait.' );
+    if ( typeof StripeCheckout !== 'undefined' ) {
 
-            var args = {
-                    action: 'process_donation',
-                    amount: $( '.donation_amount_form:checked' ).val(),
-                    stripeToken: token.id,
-                    email: token.email
-                },
-                customAmount = $( '#custom_amount' ).val();
+        var handler = StripeCheckout.configure( {
+            key: psrm.stripe_pk,
+            image: psrm.logo,
+            locale: 'auto',
+            token: function ( token ) {
+                console.log( token );
+                $( '.donation-modal' ).modal( 'show' );
+                $( '.modal-body' ).text( 'Your information has been validated. Now processing your donation. Please wait.' );
 
-            if ( customAmount ) {
-                args.customAmount = customAmount;
-            }
+                var args = {
+                        action: 'process_donation',
+                        amount: $( '.donation_amount_form:checked' ).val(),
+                        stripeToken: token.id,
+                        email: token.email
+                    },
+                    customAmount = $( '#custom_amount' ).val();
 
-            setTimeout( $.post(
-                psrm.ajaxurl,
-                args,
-                function ( data ) {
-                    var modal_body = $( '.modal-body' );
-                    modal_body.empty();
-                    data = JSON.parse( data );
-                    if ( data.success ) {
-                        modal_body.text( data.message );
-                        $( '.donation-analytics' ).html( data.analytics );
-                    } else {
-                        modal_body.text( data.message );
-                        modal_body.append( data.responseText );
-                    }
+                if ( customAmount ) {
+                    args.customAmount = customAmount;
                 }
-            ), 2000 );
-        }
-    } );
+
+                // Set delay for front end ux.
+                setTimeout( $.post(
+                    psrm.ajaxurl,
+                    args,
+                    function ( data ) {
+                        var modal_body = $( '.modal-body' );
+                        modal_body.empty();
+                        data = JSON.parse( data );
+                        if ( data.success ) {
+                            modal_body.text( data.message );
+                            $( '.donation-analytics' ).html( data.analytics );
+                        } else {
+                            modal_body.text( data.message );
+                            modal_body.append( data.responseText );
+                        }
+                    }
+                ), 2000 );
+            }
+        } );
+    }
 
     $( '.donation-button' ).on( 'click', function ( e ) {
         var donation_form = $( '.donation_amount_form:checked' ),
