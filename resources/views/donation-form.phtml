@@ -1,9 +1,9 @@
-<div class="form-group">
+<div class="form-group donation-form">
 	<label for="amount">Choose Amount:</label>
 
 	<div class="row">
 		<?php foreach ( $donation_amounts as $key => $amount ): ?>
-			<div class="col-sm-4">
+			<div class="col-sm-4 donation-amount-input">
 				<input type="radio" class="donation_amount_form" id="amount<?php echo $key; ?>"
 				       name="amount"
 				       data-amount="<?php echo $amount; ?>"
