@@ -13,6 +13,13 @@ class Recaptcha {
 	public function __construct() {
 		$this->model = new RecaptchaSettings();
 		$this->view  = new Views( PSRM::$views );
+		add_action( 'login_enqueue_scripts', [ $this, 'login_recaptcha_script' ] );
+		add_filter( 'wp_authenticate_user', [ $this, 'verify_captcha' ], 10, 2 );
+		add_action( 'login_form', [ $this, 'display_captcha' ] );
+	}
+
+	public function login_recaptcha_script() {
+		wp_enqueue_script( 'recaptcha_login', 'https://www.google.com/recaptcha/api.js' );
 	}
 
 	public function display_captcha() {
