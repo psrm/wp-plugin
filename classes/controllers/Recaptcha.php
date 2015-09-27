@@ -13,32 +13,41 @@ class Recaptcha {
 	public function __construct() {
 		$this->model = new RecaptchaSettings();
 		$this->view  = new Views( PSRM::$views );
-		add_action( 'login_enqueue_scripts', [ $this, 'login_recaptcha_script' ] );
-		add_filter( 'wp_authenticate_user', [ $this, 'verify_captcha' ], 10, 2 );
-		add_action( 'login_form', [ $this, 'display_captcha' ] );
+
+		add_action( 'login_enqueue_scripts', [ $this, 'enqueueRecaptchaScript' ] );
+		add_filter( 'wp_authenticate_user', [ $this, 'authenticateWithCaptcha' ], 10, 2 );
+		add_action( 'login_form', [ $this, 'displayCaptcha' ] );
 	}
 
-	public function login_recaptcha_script() {
-		wp_enqueue_script( 'recaptcha_login', 'https://www.google.com/recaptcha/api.js' );
+	/**
+	 * Enqueue the captcha script.
+	 */
+	public function enqueueRecaptchaScript() {
+		wp_enqueue_script( 'recaptcha', 'https://www.google.com/recaptcha/api.js' );
 	}
 
-	public function display_captcha() {
+	public function displayCaptcha() {
 		echo $this->view->render( 'display-recaptcha', [ 'site_key' => GOOGLE_RECAPTCHA_SITE_KEY ] );
 	}
 
-	public function verify_captcha( $user, $password ) {
+	/**
+	 * Will verify if a captcha was submitted and if so, if it's valid.
+	 *
+	 * @return bool|\WP_Error True on successful captcha, else WP_Error explaining the error.
+	 */
+	public function verifyCaptcha() {
 		if ( isset( $_POST[ 'g-recaptcha-response' ] ) ) {
 			$rc       = new \ReCaptcha\ReCaptcha( GOOGLE_RECAPTCHA_SECRET_KEY );
 			$response = $rc->verify( $_POST[ 'g-recaptcha-response' ] );
 
 			if ( $response->isSuccess() ) {
-				return $user;
+				return true;
 			}
 
 			$error_codes = $response->getErrorCodes();
-			$error = '';
-			foreach($error_codes as $code){
-				switch($code){
+			$error       = '';
+			foreach ( $error_codes as $code ) {
+				switch ( $code ) {
 					case 'missing-input-secret':
 						$error .= 'The secret parameter is missing. ';
 						break;
@@ -56,9 +65,28 @@ class Recaptcha {
 				}
 			}
 
-			return new \WP_Error( 'Captcha Invalid', __( '<strong>ERROR</strong>: ' . $error ) );
+			return new \WP_Error( 'invalid_recaptcha', __( '<strong>ERROR</strong>: ' . $error ) );
 		}
 
-		return new \WP_Error( 'Captcha Invalid', __( '<strong>ERROR</strong>: You must use the reCAPTCHA system and submit a CAPTCHA response to log in.' ) );
+		return new \WP_Error( 'invalid_recaptcha', __( '<strong>ERROR</strong>: You must use the reCAPTCHA system and submit a CAPTCHA response with the form.' ) );
+	}
+
+	/**
+	 * Uses the WordPress filter wp_authenticate_user to verify the captcha was submitted
+	 * before allowing the user to login.
+	 *
+	 * @param $user \WP_User The user object after username and password have been verified.
+	 *
+	 * @return \WP_User|\WP_Error Returns the user object if successful,
+	 * else WP_Error explaining the error.
+	 */
+	public function authenticateWithCaptcha( $user ) {
+		$captcha = $this->verifyCaptcha();
+
+		if ( $captcha === true ) {
+			return $user;
+		}
+
+		return $captcha;
 	}
 }
