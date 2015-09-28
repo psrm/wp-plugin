@@ -14,7 +14,6 @@ jQuery( function ( $ ) {
             image: psrm.logo,
             locale: 'auto',
             token: function ( token ) {
-                console.log( token );
                 $( '.donation-modal' ).modal( 'show' );
                 $( '.modal-body' ).text( 'Your information has been validated. Now processing your donation. Please wait.' );
 
