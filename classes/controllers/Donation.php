@@ -21,13 +21,13 @@ class Donation {
 	public function display_donation_form() {
 		return $this->view->render( 'donation-form', array(
 			'donation_amounts'      => $this->model->getOption( 'donation_amounts', 'donations' ),
-			'allow_custom_amount'   => $this->model->getOption( 'allow_custom_amount', 'donations' ),
-			'custom_donation_floor' => $this->model->getOption( 'custom_donation_floor', 'donations' )
+			'allow_custom_amount'   => STRIPE_ALLOW_CUSTOM_AMOUNT,
+			'custom_donation_floor' => STRIPE_CUSTOM_DONATION_FLOOR
 		) );
 	}
 
 	public function process_donation() {
-		$data = $this->doValidation( $_POST, $this->model->getOption( 'custom_donation_floor', 'donations' ) );
+		$data = $this->doValidation( $_POST, STRIPE_CUSTOM_DONATION_FLOOR );
 
 		$donation_amounts = $this->model->getOption( 'donation_amounts', 'donations' );
 
@@ -44,7 +44,7 @@ class Donation {
 			}
 
 			try {
-				\Stripe\Stripe::setApiKey( $this->model->getOption( 'stripe_secret_key', 'donations' ) );
+				\Stripe\Stripe::setApiKey( STRIPE_SECRET_KEY );
 
 				$response = \Stripe\Charge::create( [
 					'amount'        => $donation_amount * 100,
