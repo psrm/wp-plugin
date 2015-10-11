@@ -12,6 +12,7 @@ class Settings extends AbstractSettingsModel
 	protected $optionGroups = array(
 		'donations' => 'Donations',
 		'google-places' => 'Google Places',
+		'recaptcha' => 'reCAPTCHA',
 	);
 
 	public function __construct()
