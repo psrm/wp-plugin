@@ -86,7 +86,7 @@ class PSRM
 
 		wp_enqueue_style(self::$slug . '-plugin-styles', self::$styles . '/main.min.css', [], '1442689308');
 
-		wp_register_script(self::$slug . '-plugin-scripts', self::$scripts . '/scripts.min.js', ['jquery'], '1442689308');
+		wp_register_script(self::$slug . '-plugin-scripts', self::$scripts . '/scripts.min.js', ['jquery'], '1444594724');
 		wp_localize_script( self::$slug . '-plugin-scripts', 'psrm', [
 			'ajaxurl'   => admin_url( 'admin-ajax.php' ),
 			'name'      => get_bloginfo( 'name' ),

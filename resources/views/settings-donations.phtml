@@ -40,7 +40,7 @@
 
 	<h3>Donation Amounts</h3>
 
-	<ul class="donation-amounts" id="editable">
+	<ul class="donation-amounts editable">
 		<?php if ( $donations = $settingsModel->getOption( 'donation_amounts', $current_tab ) ):
 			$donation_option_name = $settingsModel->getInputName( 'donation_amounts', $current_tab );
 			foreach ( $donations as $amount ): ?>
@@ -60,4 +60,20 @@
 <br>
 <label for="custom_donation_floor">Do not allow custom donations below: $</label><input type="number" id="custom_donation_floor" name="<?php echo $settingsModel->getInputName('custom_donation_floor', $current_tab); ?>" value="<?php echo $settingsModel->getOption('custom_donation_floor', $current_tab); ?>">
 </p>
+
+	<h3>Emails</h3>
+	<ul class="email-successful-donation editable">
+		<?php if ( $emails = $settingsModel->getOption( 'email_successful_donation', $current_tab ) ):
+			$email_option_name = $settingsModel->getInputName( 'email_successful_donation', $current_tab );
+			foreach ( $emails as $email ): ?>
+				<li><input type="hidden" name="<?php echo $email_option_name; ?>[]" value="<?php echo $email; ?>">
+					<span title="Drag to reposition" class="drag-handle">&#9776;</span><?php echo $email; ?>
+					<i class="js-remove" title="Click to remove">✖</i></li>
+			<?php endforeach; ?>
+		<?php endif; ?>
+	</ul>
+	<label for="add_email">Add Email</label>
+	<input type="text" id="add_email"><input type="hidden" id="add_email_name"
+	                                         value="<?php echo $settingsModel->getInputName( 'email_successful_donation', $current_tab ); ?>"><?php submit_button( 'Add', 'secondary', 'add_email_button', false ); ?>
+
 <?php submit_button(); ?>
