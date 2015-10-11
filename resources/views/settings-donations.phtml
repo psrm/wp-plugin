@@ -1,25 +1,36 @@
 <?php extract($vars); ?>
 
-<h3>Authorize.net Settings</h3>
+<h3>Stripe Settings</h3>
 
 <table class='form-table'>
 	<tr>
-		<th scope="row">API Login ID:</th>
+		<th scope="row"><label for="stripe-secret-key">Secret Key:</label></th>
 
 		<td>
-			<input type='text' class='regular-text' id='authorize-net-api-id' value='<?php echo $settingsModel->getOption('authorize_net_api_id', $current_tab) ?>'
-			       name='<?php echo $settingsModel->getInputName('authorize_net_api_id', $current_tab) ?>' />
+			<input type='text' class='regular-text' id='stripe-secret-key' value='<?php echo $settingsModel->getOption('stripe_secret_key', $current_tab) ?>'
+			       name='<?php echo $settingsModel->getInputName('stripe_secret_key', $current_tab) ?>' />
 
 		</td>
 
 	</tr>
 
 	<tr>
-		<th scope="row">Transaction Key</th>
+		<th scope="row"><label for="stripe-public-key">Public Key</label></th>
 
 		<td>
-			<input type='text' class='regular-text' id='authorize-net-transaction-key' value='<?php echo $settingsModel->getOption('authorize_net_transaction_key', $current_tab) ?>'
-			       name='<?php echo $settingsModel->getInputName('authorize_net_transaction_key', $current_tab) ?>' />
+			<input type='text' class='regular-text' id='stripe-public-key' value='<?php echo $settingsModel->getOption('stripe_public_key', $current_tab) ?>'
+			       name='<?php echo $settingsModel->getInputName('stripe_public_key', $current_tab) ?>' />
+
+		</td>
+
+	</tr>
+
+	<tr>
+		<th scope="row"><label for="checkout-image-url">Checkout Image URL</label></th>
+
+		<td>
+			<input type='text' class='regular-text' id='checkout-image-url' value='<?php echo $settingsModel->getOption('checkout_image_url', $current_tab) ?>'
+			       name='<?php echo $settingsModel->getInputName('checkout_image_url', $current_tab) ?>' />
 
 		</td>
 
@@ -27,4 +38,26 @@
 
 </table>
 
+	<h3>Donation Amounts</h3>
+
+	<ul class="donation-amounts" id="editable">
+		<?php if ( $donations = $settingsModel->getOption( 'donation_amounts', $current_tab ) ):
+			$donation_option_name = $settingsModel->getInputName( 'donation_amounts', $current_tab );
+			foreach ( $donations as $amount ): ?>
+				<li><input type="hidden"
+				           name="<?php echo $donation_option_name; ?>[]"
+				           value="<?php echo $amount; ?>"><span title="Drag to reposition" class="drag-handle">&#9776;</span><?php echo $amount; ?>
+					<i class="js-remove" title="Click to remove">✖</i></li>
+			<?php endforeach; ?>
+		<?php endif; ?>
+	</ul>
+	<label for="add_amount">Add Amount</label> <input
+	type="number" id="add_amount"><input type="hidden" id="add_amount_name"
+	                       value="<?php echo $settingsModel->getInputName( 'donation_amounts', $current_tab ); ?>"><?php submit_button( 'Add', 'secondary', 'add_amount_button', false ); ?>
+
+<p><input type="checkbox" id="allow_custom_name" name="<?php echo $settingsModel->getInputName('allow_custom_amount', $current_tab); ?>" <?php echo $settingsModel->getOption('allow_custom_amount', $current_tab) ? 'checked' : '';?> />
+<label for="allow_custom_name">Allow customer to specify their own donation amount.</label>
+<br>
+<label for="custom_donation_floor">Do not allow custom donations below: $</label><input type="number" id="custom_donation_floor" name="<?php echo $settingsModel->getInputName('custom_donation_floor', $current_tab); ?>" value="<?php echo $settingsModel->getOption('custom_donation_floor', $current_tab); ?>">
+</p>
 <?php submit_button(); ?>

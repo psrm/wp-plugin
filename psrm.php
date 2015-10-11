@@ -38,11 +38,7 @@ class PSRM
 
 	function setConstants()
 	{
-		if(strpos($_SERVER['HTTP_HOST'], 'dev') !== false || $_SERVER['SERVER_NAME'] == 'staging.psrm.org') {
-			define( 'AUTHORIZE_NET_SANDBOX', true);
-		} else {
-			define('AUTHORIZE_NET_SANDBOX', false);
-		}
+
 	}
 
 	function setVariables()
@@ -66,9 +62,10 @@ class PSRM
 
 	function initPlugin()
 	{
-		add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
-
 		require_once('autoload.php');
+
+		add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueueAdminScripts' ] );
 
 		// Instantiate all controllers
         $dir = new \DirectoryIterator(self::$controllers);
@@ -85,13 +82,24 @@ class PSRM
 
 	function enqueueScripts()
 	{
-		wp_enqueue_style(self::$slug . '-plugin-styles', self::$styles . '/main.min.css', [], '1430489675');
+		$settings_model = new models\Settings();
 
-		wp_register_script(self::$slug . '-plugin-scripts', self::$scripts . '/scripts.min.js', ['jquery'], '1430489675');
+		wp_enqueue_style(self::$slug . '-plugin-styles', self::$styles . '/main.min.css', [], '1442689308');
+
+		wp_register_script(self::$slug . '-plugin-scripts', self::$scripts . '/scripts.min.js', ['jquery'], '1442689308');
 		wp_localize_script( self::$slug . '-plugin-scripts', 'psrm', [
-			'ajaxurl' => admin_url('admin-ajax.php'),
+			'ajaxurl'   => admin_url( 'admin-ajax.php' ),
+			'name'      => get_bloginfo( 'name' ),
+			'stripe_pk' => $settings_model->getOption( 'stripe_public_key', 'donations' ),
+			'logo'      => $settings_model->getOption( 'checkout_image_url', 'donations' )
+
 		] );
 		wp_enqueue_script(self::$slug . '-plugin-scripts');
+	}
+
+	public function enqueueAdminScripts() {
+		wp_enqueue_style( self::$slug . '-plugin-admin-styles', self::$styles . '/admin.min.css', [ ], '1442689308' );
+		wp_enqueue_script( self::$slug . '-plugin-admin-scripts', self::$scripts . '/admin.min.js', [ 'jquery' ], '1442689308' );
 	}
 
 }

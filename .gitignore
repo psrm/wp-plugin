@@ -4,3 +4,4 @@ composer.phar
 composer.lock
 node_modules/
 *.min.*
+bower_components/

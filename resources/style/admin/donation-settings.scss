@@ -1,0 +1,21 @@
+.psrm-settings {
+  ul.donation-amounts {
+    li {
+      font-size: 1.25rem;
+      margin: 20px;
+      .drag-handle {
+        margin-right: 2%;
+        &:hover {
+          cursor: move;
+          cursor: -webkit-grabbing;
+        }
+      }
+      .js-remove {
+        font-size: .5rem;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
