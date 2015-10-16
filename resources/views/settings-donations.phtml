@@ -36,6 +36,17 @@
 
 	</tr>
 
+	<tr>
+		<th scope="row"><label for="checkout-image-url">Stripe dashboard payments URL</label></th>
+
+		<td>
+			<input type='text' class='regular-text' id='checkout-image-url' value='<?php echo $settingsModel->getOption('stripe_dashboard_url', $current_tab) ?>'
+			       name='<?php echo $settingsModel->getInputName('stripe_dashboard_url', $current_tab) ?>' />
+
+		</td>
+
+	</tr>
+
 </table>
 
 	<h3>Donation Amounts</h3>
