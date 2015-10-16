@@ -1,18 +1,15 @@
 jQuery( document ).ready( function ( $ ) {
-    var $editable = document.getElementsByClassName( 'editable' );
+    var $editable = document.getElementById( 'editable' );
     if ( $editable ) {
-        for ( var i = 0; i < $editable.length; i ++ ) {
-            var editableList = [];
-            editableList[ i ] = Sortable.create( $editable[ i ], {
+            editableList = Sortable.create( $editable, {
                 animation: 150,
                 filter: '.js-remove',
                 handle: '.drag-handle',
                 onFilter: function ( evt ) {
-                    var el = editableList[ i ].closest( evt.item ); // get dragged item
+                    var el = editableList.closest( evt.item ); // get dragged item
                     el.parentNode.removeChild( el );
                 }
             } );
-        }
 
         $( '#add_amount_button' ).click( function ( e ) {
             e.preventDefault();
@@ -26,9 +23,14 @@ jQuery( document ).ready( function ( $ ) {
             e.preventDefault();
             var fieldName = $( '#add_email_name' ).val();
             var emailAdded = $( '#add_email' ).val();
-            $( '.email-successful-donation' ).append( '<li><input type="hidden" name="' + fieldName + '[]" value="' + emailAdded + '"><span class="drag-handle">&#9776;</span>' + emailAdded + ' <i class="js-remove">✖</i></li>' );
+            $( '.email-successful-donation' ).append( '<li><input type="hidden" name="' + fieldName + '[]" value="' + emailAdded + '">' + emailAdded + ' <i class="js-remove-email">✖</i></li>' );
             $( '#add_email' ).val( '' );
         } );
+
+        $('.js-remove-email' ).click(function(e){
+            e.preventDefault();
+            $(this).parent().remove();
+        });
     }
 
 } );
