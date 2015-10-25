@@ -56,6 +56,12 @@ class Donation {
 					]
 				] );
 
+				wp_mail(
+					$this->model->getOption( 'email_successful_donation', 'donations' ),
+					'Successful donation for $' . $response->amount / 100,
+					'Successful donation! View this transaction in Stripe: ' . $this->model->getOption( 'stripe_dashboard_url', 'donations' ) . $response->id
+				);
+
 				$trans = [
 					'id'      => $response->id,
 					'revenue' => $donation_amount,
