@@ -21,6 +21,7 @@ class Donation {
 	public function display_donation_form() {
 		return $this->view->render( 'donation-form', array(
 			'donation_amounts'      => $this->model->getOption( 'donation_amounts', 'donations' ),
+			'donation_funds'        => $this->model->getOption( 'donation_funds', 'donations' ),
 			'allow_custom_amount'   => STRIPE_ALLOW_CUSTOM_AMOUNT,
 			'custom_donation_floor' => STRIPE_CUSTOM_DONATION_FLOOR
 		) );
@@ -52,7 +53,7 @@ class Donation {
 					'source'        => $data[ 'result' ][ 'stripeToken' ],
 					'receipt_email' => $data[ 'result' ][ 'email' ],
 					'metadata'      => [
-						'Fund' => 'General Fund'
+						'Fund' => $data[ 'result' ][ 'fund' ]
 					]
 				] );
 
@@ -118,6 +119,7 @@ class Donation {
 
 		$gump->validation_rules( [
 			'amount'       => 'required',
+			'fund'         => 'required',
 			'customAmount' => 'numeric|min_numeric,' . $donation_min,
 			'email'        => 'required|valid_email',
 			'stripeToken'  => 'required'
