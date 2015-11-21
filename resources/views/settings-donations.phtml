@@ -51,26 +51,44 @@
 
 	<h3>Donation Amounts</h3>
 
-	<ul class="donation-amounts" id="editable">
+	<ul class="donation-amounts" id="editable_amounts">
 		<?php if ( $donations = $settingsModel->getOption( 'donation_amounts', $current_tab ) ):
 			$donation_option_name = $settingsModel->getInputName( 'donation_amounts', $current_tab );
 			foreach ( $donations as $amount ): ?>
 				<li><input type="hidden"
 				           name="<?php echo $donation_option_name; ?>[]"
-				           value="<?php echo $amount; ?>"><span title="Drag to reposition" class="drag-handle">&#9776;</span><?php echo $amount; ?>
-					<i class="js-remove" title="Click to remove">✖</i></li>
+				           value="<?php echo $amount; ?>"><span title="Drag to reposition" class="drag-handle-amounts">&#9776;</span><?php echo $amount; ?>
+					<i class="js-remove-amounts" title="Click to remove">✖</i></li>
 			<?php endforeach; ?>
 		<?php endif; ?>
 	</ul>
 	<label for="add_amount">Add Amount</label> <input
 	type="number" id="add_amount"><input type="hidden" id="add_amount_name"
-	                       value="<?php echo $settingsModel->getInputName( 'donation_amounts', $current_tab ); ?>"><?php submit_button( 'Add', 'secondary', 'add_amount_button', false ); ?>
+	                                     value="<?php echo $settingsModel->getInputName( 'donation_amounts', $current_tab ); ?>"><?php submit_button( 'Add', 'secondary', 'add_amount_button', false ); ?>
 
 <p><input type="checkbox" id="allow_custom_name" name="<?php echo $settingsModel->getInputName('allow_custom_amount', $current_tab); ?>" <?php echo $settingsModel->getOption('allow_custom_amount', $current_tab) ? 'checked' : '';?> />
 <label for="allow_custom_name">Allow customer to specify their own donation amount.</label>
 <br>
 <label for="custom_donation_floor">Do not allow custom donations below: $</label><input type="number" id="custom_donation_floor" name="<?php echo $settingsModel->getInputName('custom_donation_floor', $current_tab); ?>" value="<?php echo $settingsModel->getOption('custom_donation_floor', $current_tab); ?>">
 </p>
+
+	<h3>Donation Funds</h3>
+
+	<ul class="donation-funds" id="editable_funds">
+		<?php if ( $funds = $settingsModel->getOption( 'donation_funds', $current_tab ) ):
+			$donation_option_name = $settingsModel->getInputName( 'donation_funds', $current_tab );
+			foreach ( $funds as $fund ): ?>
+				<li><input type="hidden"
+				           name="<?php echo $donation_option_name; ?>[]"
+				           value="<?php echo $fund; ?>"><span title="Drag to reposition" class="drag-handle-funds">&#9776;</span><?php echo $fund; ?>
+					<i class="js-remove-funds" title="Click to remove">✖</i></li>
+			<?php endforeach; ?>
+		<?php endif; ?>
+	</ul>
+	<label for="add_fund">Add Fund</label> <input
+	type="text" id="add_fund"><input type="hidden" id="add_fund_name"
+	                                   value="<?php echo $settingsModel->getInputName( 'donation_funds', $current_tab ); ?>"><?php submit_button( 'Add', 'secondary', 'add_fund_button', false ); ?>
+
 
 	<h3>Emails</h3>
 	<ul class="email-successful-donation">
