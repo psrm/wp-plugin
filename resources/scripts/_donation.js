@@ -20,6 +20,7 @@ jQuery( function ( $ ) {
                 var args = {
                         action: 'process_donation',
                         amount: $( '.donation_amount_form:checked' ).val(),
+                        fund: $( '.donation_fund' ).val(),
                         stripeToken: token.id,
                         email: token.email
                     },

@@ -1,4 +1,16 @@
 <div class="form-group donation-form">
+	<label for="donation_fund">Choose Fund:</label>
+
+	<div class="row">
+		<div class="col-sm-4 donation-fund-select">
+			<select name="donation_fund" class="donation_fund" id="donation_fund">
+				<?php foreach ( $donation_funds as $key => $fund ): ?>
+					<option id="<?= $key ?>"><?= $fund ?></option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+	</div>
+
 	<label for="amount">Choose Amount:</label>
 
 	<div class="row">
