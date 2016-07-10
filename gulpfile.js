@@ -20,10 +20,10 @@ elixir(function (mix) {
             ],
             'public/js/main.js')
         .scripts([
-                'Sortable/Sortable.js'
+                'sortablejs/Sortable.js'
             ],
             'public/js/sortable.js',
-            'bower_components'
+            'node_modules'
         )
         .scripts([
                 'resources/assets/js/admin/*.js'
