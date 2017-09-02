@@ -4,7 +4,7 @@
 # Contribute #
 To help contribute, there are a few prerequisites:
 
-* PHP 5.5+
+* PHP 7.1
 * Node.js
 * Some kind of LAMP/LEMP/WAMP/MAMP stack
 
