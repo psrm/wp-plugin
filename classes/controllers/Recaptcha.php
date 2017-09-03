@@ -35,19 +35,21 @@ class Recaptcha {
 	 *
 	 * @return bool|\WP_Error True on successful captcha, else WP_Error explaining the error.
 	 */
-	public function verifyCaptcha() {
-		if ( isset( $_POST[ 'g-recaptcha-response' ] ) ) {
-			$rc       = new \ReCaptcha\ReCaptcha( GOOGLE_RECAPTCHA_SECRET_KEY );
-			$response = $rc->verify( $_POST[ 'g-recaptcha-response' ] );
+	public function verifyCaptcha()
+	{
+		$error = '';
 
-			if ( $response->isSuccess() ) {
+		try {
+			$rc = new \ReCaptcha\ReCaptcha(GOOGLE_RECAPTCHA_SECRET_KEY);
+			$response = $rc->verify($_POST['g-recaptcha-response']);
+
+			if ($response->isSuccess()) {
 				return true;
 			}
 
 			$error_codes = $response->getErrorCodes();
-			$error       = '';
-			foreach ( $error_codes as $code ) {
-				switch ( $code ) {
+			foreach ($error_codes as $code) {
+				switch ($code) {
 					case 'missing-input-secret':
 						$error .= 'The secret parameter is missing. ';
 						break;
@@ -55,20 +57,21 @@ class Recaptcha {
 						$error .= 'The secret parameter is invalid or malformed. ';
 						break;
 					case 'missing-input-response':
-						$error .= 'The response parameter is missing. ';
+						return new \WP_Error($code, __('You must submit the CAPTCHA.'));
 						break;
 					case 'invalid-input-response':
 						$error .= 'The response parameter is invalid or malformed. ';
 						break;
 					default:
-						$error .= 'There was a general error. Please contact support. ';
+						$error .= 'Unknown error with Recaptcha ';
 				}
 			}
-
-			return new \WP_Error( 'invalid_recaptcha', __( '<strong>ERROR</strong>: ' . $error ) );
+		} catch (\Exception $e) {
+			$error .= $e->getMessage();
 		}
 
-		return new \WP_Error( 'invalid_recaptcha', __( '<strong>ERROR</strong>: You must use the reCAPTCHA system and submit a CAPTCHA response with the form.' ) );
+		error_log('#recaptcha: ' . $error);
+		return new \WP_Error('recaptcha-error', __('An error occurred. Please try to log in again. If it keeps happening please contact site support.'));
 	}
 
 	/**
