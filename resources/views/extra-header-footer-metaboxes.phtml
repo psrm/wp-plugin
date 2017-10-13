@@ -1,0 +1,26 @@
+<?php
+/** @var string $nonce */
+/** @var string $label */
+/** @var mixed $value */
+$labelEditor = "{$label}_editor";
+$labelTextarea = "{$label}_textarea";
+?>
+
+<textarea id="<?=$label?>" name="<?=$label?>"><?=$value?></textarea>
+<div id="<?=$labelEditor?>" style="height:200px;position:relative"></div>
+
+<script>
+    var <?=$labelEditor?> = ace.edit("<?=$labelEditor?>");
+    var <?=$labelTextarea?> = jQuery('textarea[name="<?=$label?>"]');
+	<?=$labelTextarea?>.hide();
+	<?=$labelEditor?>.getSession().setValue(<?=$labelTextarea?>.val());
+	<?=$labelEditor?>.getSession().on('change', function(){
+		<?=$labelTextarea?>.text(<?=$labelEditor?>.getSession().getValue());
+    });
+	<?=$labelEditor?>.setTheme("ace/theme/monokai");
+	<?=$labelEditor?>.getSession().setMode("ace/mode/javascript");
+	<?=$labelEditor?>.setAutoScrollEditorIntoView(true);
+	<?=$labelEditor?>.getSession().setUseWrapMode(true);
+</script>
+
+<?=$nonce?>
