@@ -14,9 +14,6 @@ jQuery( function ( $ ) {
             image: psrm.logo,
             locale: 'auto',
             token: function ( token ) {
-                $( '.donation-modal' ).modal( 'show' );
-                $( '.modal-body' ).text( 'Your information has been validated. Now processing your donation. Please wait.' );
-
                 var args = {
                         action: 'process_donation',
                         amount: $( '.donation_amount_form:checked' ).val(),
@@ -30,23 +27,16 @@ jQuery( function ( $ ) {
                     args.customAmount = customAmount;
                 }
 
-                // Set delay for front end ux.
-                setTimeout( $.post(
+                $('.donation-form').html('<img src="https://www.psrm.org/wp-content/uploads/2017/12/loading_spinner.gif" height="50" width="50" alt="loading..."/>');
+                $('.donation-button').hide();
+
+                $.post(
                     psrm.ajaxurl,
                     args,
                     function ( data ) {
-                        var modal_body = $( '.modal-body' );
-                        modal_body.empty();
-                        data = JSON.parse( data );
-                        if ( data.success ) {
-                            modal_body.text( data.message );
-                            $( '.donation-analytics' ).html( data.analytics );
-                        } else {
-                            modal_body.text( data.message );
-                            modal_body.append( data.responseText );
-                        }
+                        $('.donation-form').html(data);
                     }
-                ), 2000 );
+                );
             }
         } );
     }
