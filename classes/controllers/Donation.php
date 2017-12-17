@@ -33,10 +33,10 @@ class Donation {
 		$donation_amounts = $this->model->getOption( 'donation_amounts', 'donations' );
 
 		if ( $data[ 'success' ] &&
-		     (
-			     $data[ 'result' ][ 'amount' ] == 'custom' ||
-			     isset( $donation_amounts[ $data[ 'result' ][ 'amount' ] ] )
-		     )
+			(
+				$data[ 'result' ][ 'amount' ] == 'custom' ||
+				isset( $donation_amounts[ $data[ 'result' ][ 'amount' ] ] )
+			)
 		) {
 			if ( $data[ 'result' ][ 'amount' ] == 'custom' ) {
 				$donation_amount = $data[ 'result' ][ 'customAmount' ];
@@ -59,60 +59,32 @@ class Donation {
 
 				wp_mail(
 					$this->model->getOption( 'email_successful_donation', 'donations' ),
-					'Successful donation for $' . $response->amount / 100,
+					"Successful donation for ${$donation_amount}",
 					'Successful donation! View this transaction in Stripe: ' . $this->model->getOption( 'stripe_dashboard_url', 'donations' ) . $response->id
 				);
 
-				$trans = [
-					'id'      => $response->id,
-					'revenue' => $donation_amount,
-				];
-				$items = [
-					[
-						'name'     => 'Donation of $' . $donation_amount,
-						'sku'      => 'DONATE' . $donation_amount,
-						'category' => 'Donation',
-						'price'    => $donation_amount,
-						'qty'      => 1,
-					]
-				];
-
-				$output = [
-					'success'       => true,
-					'message'       => 'Thank you for your donation!',
-					'transactionId' => $response->id,
-					'analytics'     => $this->view->render( 'ecommerce-ga-donation', compact( 'trans', 'items' ) ),
-				];
-			} catch ( \Stripe\Error\Card $e ) {
-				$output = [
-					'success'      => false,
-					'message'      => 'Payment processing failed.',
-					'responseText' => $e->getMessage()
-				];
+				echo $this->view->render('donation-successful-outcome', [
+					'donationAmount' => $donation_amount,
+					'transactionId'  => $response->id,
+				]);
 			} catch ( \Exception $e ) {
-				$output = [
-					'success'      => false,
+				echo $this->view->render('donation-failed-outcome', [
 					'message'      => 'There was an error.',
 					'responseText' => $e->getMessage()
-				];
+				]);
 			}
 
 		} else {
-			$output = [
-				'success'            => false,
-				'message'            => 'Form validation failed. The error(s) are listed below. Correct the errors and resubmit.',
-				'responseReasonCode' => 0,
-				'responseCode'       => 0,
-				'responseText'       => $data[ 'result' ]
-			];
+			echo $this->view->render('donation-failed-outcome', [
+				'message'      => 'Form validation failed. Correct the errors and resubmit.',
+				'responseText' => $data[ 'result' ]
+			]);
 		}
-
-		echo json_encode( $output );
 
 		exit;
 	}
 
-	protected function doValidation( $data, $donation_min ) {
+	protected function doValidation($data, $donation_min ) {
 		$gump = new \GUMP();
 
 		$data = $gump->sanitize( $data );
@@ -125,7 +97,14 @@ class Donation {
 			'stripeToken'  => 'required'
 		] );
 
-		$validated_data = $gump->run( $data );
+		try {
+			$validated_data = $gump->run($data);
+		} catch (\Exception $e) {
+			return [
+				'success' => false,
+				'result'  => $e->getMessage(),
+			];
+		}
 
 		if ( $validated_data === false ) {
 			return [
