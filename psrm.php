@@ -91,7 +91,8 @@ class PSRM
 			'ajaxurl'   => admin_url( 'admin-ajax.php' ),
 			'name'      => get_bloginfo( 'name' ),
 			'stripe_pk' => $settings_model->getOption( 'stripe_public_key', 'donations' ),
-			'logo'      => $settings_model->getOption( 'checkout_image_url', 'donations' )
+			'logo'      => $settings_model->getOption( 'checkout_image_url', 'donations' ),
+			'donation_amount_floor' => $settings_model->getOption('custom_donation_floor', 'donations')
 
 		] );
 		wp_enqueue_script(self::$slug . '-plugin-scripts');
