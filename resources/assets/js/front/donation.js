@@ -50,6 +50,11 @@ jQuery( function ( $ ) {
         if ( typeof donation_form.val() !== 'undefined' ) {
             if ( donation_form.val() == 'custom' ) {
                 var donation_amount = $( '#custom_amount' ).val();
+
+                if (donation_amount < psrm.donation_amount_floor) {
+                    donation_button_error.text('Donation amount must be at least $' + psrm.donation_amount_floor);
+                    return;
+                }
             } else {
                 var donation_amount = donation_form.attr( 'data-amount' );
             }
