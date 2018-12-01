@@ -1,11 +1,10 @@
 <?php
-
-use psrm\PSRM;
-use psrm\utils\Views;
-
-$view = new Views(PSRM::$views);
-
-extract($vars);
+/** @var string $pageTitle */
+/** @var string $current_tab */
+/** @var string $pageSlug */
+/** @var mixed $vars */
+/** @var psrm\models\Settings $settingsModel */
+/** @var psrm\utils\Views $view */
 ?>
 
 <div class="wrap">
