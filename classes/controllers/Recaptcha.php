@@ -5,18 +5,21 @@ namespace psrm\controllers;
 use psrm\PSRM;
 use psrm\utils\Views;
 use psrm\models\Recaptcha as RecaptchaSettings;
+use psrm\models\Settings;
 
 class Recaptcha {
-	protected $model;
+	protected $settings;
 	protected $view;
 
 	public function __construct() {
-		$this->model = new RecaptchaSettings();
-		$this->view  = new Views( PSRM::$views );
+		$this->settings = Settings::load();
+		$this->view     = new Views(PSRM::$views);
 
-		add_action( 'login_enqueue_scripts', [ $this, 'enqueueRecaptchaScript' ] );
-		add_filter( 'wp_authenticate_user', [ $this, 'authenticateWithCaptcha' ], 10, 2 );
-		add_action( 'login_form', [ $this, 'displayCaptcha' ] );
+		if (defined('WP_DEVELOPMENT') && !WP_DEVELOPMENT) {
+			add_action('login_enqueue_scripts', [$this, 'enqueuerecaptchascript']);
+			add_filter('wp_authenticate_user', [$this, 'authenticatewithcaptcha'], 10, 2);
+			add_action('login_form', [$this, 'displaycaptcha']);
+		}
 	}
 
 	/**
@@ -27,7 +30,11 @@ class Recaptcha {
 	}
 
 	public function displayCaptcha() {
-		echo $this->view->render( 'display-recaptcha', [ 'site_key' => GOOGLE_RECAPTCHA_SITE_KEY ] );
+		$vars = [
+			'site_key' => $this->settings->getOption(RecaptchaSettings::SiteKeyOptionName, RecaptchaSettings::Group),
+		];
+
+		echo $this->view->render('display-recaptcha', $vars);
 	}
 
 	/**
@@ -40,7 +47,7 @@ class Recaptcha {
 		$error = '';
 
 		try {
-			$rc = new \ReCaptcha\ReCaptcha(GOOGLE_RECAPTCHA_SECRET_KEY);
+			$rc       = new \ReCaptcha\ReCaptcha($this->settings->getOption(RecaptchaSettings::SecretKeyOptionName, RecaptchaSettings::Group));
 			$response = $rc->verify($_POST['g-recaptcha-response']);
 
 			if ($response->isSuccess()) {

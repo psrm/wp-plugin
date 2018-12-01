@@ -5,6 +5,9 @@ Plugin Name:    PSRM Plugin
 
 namespace psrm;
 
+use psrm\models\Donation;
+use psrm\models\Settings;
+
 new PSRM();
 
 class PSRM
@@ -56,8 +59,6 @@ class PSRM
 		self::$scripts       = self::$url . '/public/js';
 		self::$styles        = self::$url . '/public/css';
 		self::$views         = self::$dir . '/resources/views';
-
-		self::$settingsKey   = self::$slug . '-settings';
 	}
 
 	function initPlugin()
@@ -82,7 +83,7 @@ class PSRM
 
 	function enqueueScripts()
 	{
-		$settings_model = new models\Settings();
+		$settings_model = Settings::load();
 
 		wp_enqueue_style(self::$slug . '-plugin-styles', self::$styles . '/main.css', [], '1468126460');
 
@@ -90,10 +91,9 @@ class PSRM
 		wp_localize_script( self::$slug . '-plugin-scripts', 'psrm', [
 			'ajaxurl'   => admin_url( 'admin-ajax.php' ),
 			'name'      => get_bloginfo( 'name' ),
-			'stripe_pk' => $settings_model->getOption( 'stripe_public_key', 'donations' ),
-			'logo'      => $settings_model->getOption( 'checkout_image_url', 'donations' ),
-			'donation_amount_floor' => $settings_model->getOption('custom_donation_floor', 'donations')
-
+			'stripe_pk' => $settings_model->getOption(Donation::StripePublicKeyOptionName, Settings::DonationGroup),
+			'logo'      => $settings_model->getOption(Donation::CheckoutImageUrlOptionName, Settings::DonationGroup),
+			'donation_amount_floor' => $settings_model->getOption(Donation::CustomAmountFloorOptionName, Settings::DonationGroup),
 		] );
 		wp_enqueue_script(self::$slug . '-plugin-scripts');
 	}
