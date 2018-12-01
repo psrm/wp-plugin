@@ -57,9 +57,11 @@ class Donation {
 					]
 				] );
 
+				setlocale(LC_MONETARY, 'en_US.UTF-8');
+				$formattedDonation = money_format('$%i', $donation_amount);
 				wp_mail(
 					$this->settings->getOption(DonationSettings::EmailSuccessfulDonationOptionName, DonationSettings::Group),
-					"Successful donation for ${$donation_amount}",
+					"Successful donation for $formattedDonation",
 					'Successful donation! View this transaction in Stripe: ' . $this->settings->getOption(DonationSettings::StripeDashboardUrlOptionName, DonationSettings::Group) . $response->id
 				);
 
