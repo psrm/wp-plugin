@@ -3,13 +3,14 @@
 namespace psrm\models;
 
 class Donation extends Settings {
-	function __construct() {
-		parent::__construct();
-
-		define( 'STRIPE_SECRET_KEY', $this->getOption( 'stripe_secret_key', 'donations' ) );
-		define( 'STRIPE_PUBLIC_KEY', $this->getOption( 'stripe_public_key', 'donations' ) );
-		define( 'STRIPE_CHECKOUT_IMAGE_URL', $this->getOption( 'checkout_image_url', 'donations' ) );
-		define( 'STRIPE_ALLOW_CUSTOM_AMOUNT', $this->getOption( 'allow_custom_amount', 'donations' ) );
-		define( 'STRIPE_CUSTOM_DONATION_FLOOR', $this->getOption( 'custom_donation_floor', 'donations' ) );
-	}
+	const Group = 'donations';
+	const StripeSecretKeyOptionName = 'stripe_secret_key';
+	const StripePublicKeyOptionName = 'stripe_public_key';
+	const CheckoutImageUrlOptionName = 'checkout_image_url';
+	const AllowCustomAmountOptionName = 'allow_custom_amount';
+	const CustomAmountFloorOptionName = 'custom_donation_floor';
+	const EmailSuccessfulDonationOptionName = 'email_successful_donation';
+	const StripeDashboardUrlOptionName = 'stripe_dashboard_url';
+	const DonationAmounts = 'donation_amounts';
+	const DonationFunds = 'donation_funds';
 }

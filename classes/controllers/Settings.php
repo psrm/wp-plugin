@@ -13,7 +13,7 @@ class Settings
 
 	function __construct()
 	{
-		$this->model = new SettingsModel();
+		$this->model = SettingsModel::load();
 		$this->view = new Views(PSRM::$views);
 
 		add_action('admin_init', array($this, 'admin_init'));
@@ -49,6 +49,7 @@ class Settings
 		$vars['pageSlug']      = PSRM::$slug;
 		$vars['pageTitle']     = PSRM::NAME . ' | Settings';
 		$vars['settingsModel'] = $this->model;
+		$vars['view']          = $this->view;
 
 		echo $this->view->render( 'settings', $vars );
 	}

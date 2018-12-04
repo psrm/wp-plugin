@@ -7,12 +7,12 @@ use psrm\utils\Views;
 use psrm\models\Donation as DonationSettings;
 
 class Donation {
-	protected $model;
+	protected $settings;
 	protected $view;
 
 	public function __construct() {
-		$this->model = new DonationSettings();
-		$this->view  = new Views( PSRM::$views );
+		$this->settings = DonationSettings::load();
+		$this->view     = new Views( PSRM::$views );
 		add_shortcode( PSRM::$slug . '-donation-form', [ $this, 'display_donation_form' ] );
 		add_action( 'wp_ajax_process_donation', [ $this, 'process_donation' ] );
 		add_action( 'wp_ajax_nopriv_process_donation', [ $this, 'process_donation' ] );
@@ -20,17 +20,17 @@ class Donation {
 
 	public function display_donation_form() {
 		return $this->view->render( 'donation-form', array(
-			'donation_amounts'      => $this->model->getOption( 'donation_amounts', 'donations' ),
-			'donation_funds'        => $this->model->getOption( 'donation_funds', 'donations' ),
-			'allow_custom_amount'   => STRIPE_ALLOW_CUSTOM_AMOUNT,
-			'custom_donation_floor' => STRIPE_CUSTOM_DONATION_FLOOR
+			'donation_amounts'      => $this->settings->getOption(DonationSettings::DonationAmounts, DonationSettings::Group),
+			'donation_funds'        => $this->settings->getOption(DonationSettings::DonationFunds, DonationSettings::Group),
+			'allow_custom_amount'   => $this->settings->getOption(DonationSettings::AllowCustomAmountOptionName, DonationSettings::Group),
+			'custom_donation_floor' => $this->settings->getOption(DonationSettings::CustomAmountFloorOptionName, DonationSettings::Group)
 		) );
 	}
 
 	public function process_donation() {
-		$data = $this->doValidation( $_POST, STRIPE_CUSTOM_DONATION_FLOOR );
+		$data = $this->doValidation( $_POST, $this->settings->getOption(DonationSettings::CustomAmountFloorOptionName, DonationSettings::Group));
 
-		$donation_amounts = $this->model->getOption( 'donation_amounts', 'donations' );
+		$donation_amounts = $this->settings->getOption(DonationSettings::DonationAmounts, DonationSettings::Group);
 
 		if ( $data[ 'success' ] &&
 			(
@@ -45,7 +45,7 @@ class Donation {
 			}
 
 			try {
-				\Stripe\Stripe::setApiKey( STRIPE_SECRET_KEY );
+				\Stripe\Stripe::setApiKey($this->settings->getOption(DonationSettings::StripeSecretKeyOptionName, DonationSettings::Group));
 
 				$response = \Stripe\Charge::create( [
 					'amount'        => $donation_amount * 100,
@@ -58,9 +58,9 @@ class Donation {
 				] );
 
 				wp_mail(
-					$this->model->getOption( 'email_successful_donation', 'donations' ),
+					$this->settings->getOption(DonationSettings::EmailSuccessfulDonationOptionName, DonationSettings::Group),
 					"Successful donation for ${$donation_amount}",
-					'Successful donation! View this transaction in Stripe: ' . $this->model->getOption( 'stripe_dashboard_url', 'donations' ) . $response->id
+					'Successful donation! View this transaction in Stripe: ' . $this->settings->getOption(DonationSettings::StripeDashboardUrlOptionName, DonationSettings::Group) . $response->id
 				);
 
 				echo $this->view->render('donation-successful-outcome', [
@@ -118,6 +118,4 @@ class Donation {
 			];
 		}
 	}
-
-//	public function
 }
