@@ -3,14 +3,12 @@
 namespace psrm\controllers;
 
 use psrm\PSRM;
-use psrm\utils\Views;
+use psrm\utils\View;
 
 class ServiceAlerts
 {
-	private $view;
 	function __construct()
 	{
-		$this->view = new Views(PSRM::$views);
 		add_shortcode(PSRM::$slug . '-service-alerts', [$this, 'display_service_alerts']);
 		add_action('init', array($this, 'register_service_alert_post_type'));
 		add_action( 'init', [ $this, 'register_taxonomies' ] );
@@ -50,7 +48,7 @@ class ServiceAlerts
         ];
         $service_alert = new \WP_Query($args);
 
-        echo $this->view->render('service-alert', array('service_alert' => $service_alert));
+        echo new View('service-alert', array('service_alert' => $service_alert));
     }
 
 	function register_service_alert_post_type()
@@ -145,7 +143,7 @@ class ServiceAlerts
 	{
 		global $post;
 		if($post->post_type == 'service_alerts' && $post->post_status == 'publish') {
-			echo $this->view->render( 'service-alert-auto-delete' );
+			echo new View( 'service-alert-auto-delete' );
 		}
 	}
 

@@ -2,8 +2,7 @@
 
 namespace psrm\controllers;
 
-use psrm\PSRM;
-use psrm\utils\Views;
+use psrm\utils\View;
 
 class ExtraPostHeadersAndFooters
 {
@@ -11,11 +10,8 @@ class ExtraPostHeadersAndFooters
 	const Footer = 'footer';
 	const PageSections = [self::Header, self::Footer];
 
-	protected $view;
-
 	public function __construct()
 	{
-		$this->view = new Views(PSRM::$views);
 		add_action('add_meta_boxes', [$this, 'addMetaBoxes']);
 		add_action('save_post', [$this, 'saveMetaBoxes']);
 		add_action('wp_head', [$this, 'renderMetaDataInHeader']);
@@ -53,7 +49,7 @@ class ExtraPostHeadersAndFooters
 			return null;
 		}
 
-		return $this->view->render('extra-header-footer-output', [
+		return new View('extra-header-footer-output', [
 			'value' => $meta,
 		]);
 	}
@@ -98,7 +94,7 @@ class ExtraPostHeadersAndFooters
 			'value' => get_post_meta($post->ID, $this->getMetaBoxValueKey($section), true),
 		];
 
-		echo $this->view->render('extra-header-footer-metaboxes', $viewArgs);
+		echo new View('extra-header-footer-metaboxes', $viewArgs);
 	}
 
 	/**

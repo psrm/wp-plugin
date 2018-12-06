@@ -2,18 +2,15 @@
 
 namespace psrm\controllers;
 
-use psrm\PSRM;
-use psrm\utils\Views;
+use psrm\utils\View;
 use psrm\models\Recaptcha as RecaptchaSettings;
 use psrm\models\Settings;
 
 class Recaptcha {
 	protected $settings;
-	protected $view;
 
 	public function __construct() {
 		$this->settings = Settings::load();
-		$this->view     = new Views(PSRM::$views);
 
 		if (defined('WP_DEVELOPMENT') && !WP_DEVELOPMENT) {
 			add_action('login_enqueue_scripts', [$this, 'enqueuerecaptchascript']);
@@ -34,7 +31,7 @@ class Recaptcha {
 			'site_key' => $this->settings->getOption(RecaptchaSettings::SiteKeyOptionName, RecaptchaSettings::Group),
 		];
 
-		echo $this->view->render('display-recaptcha', $vars);
+		echo new View('display-recaptcha', $vars);
 	}
 
 	/**

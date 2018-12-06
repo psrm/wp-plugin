@@ -2,16 +2,12 @@
 
 namespace psrm\controllers;
 
-use psrm\utils\Views;
-use psrm\PSRM;
+use psrm\utils\View;
 
 class Widgets
 {
-    private $view;
-
     function __construct()
     {
-        $this->view = new Views(PSRM::$views);
         add_action('in_widget_form', [$this, 'in_widget_form'], 10, 3);
         add_filter('widget_update_callback', [$this, 'in_widget_form_update'], 10, 3);
         add_filter('dynamic_sidebar_params', [$this, 'dynamic_sidebar_params']);
@@ -19,7 +15,7 @@ class Widgets
 
     function in_widget_form($t, $return, $instance)
     {
-        echo $this->view->render('in-widget-form', ['t' => $t, 'return' => $return, 'instance' => $instance]);
+        echo new View('in-widget-form', ['t' => $t, 'return' => $return, 'instance' => $instance]);
         $return = null;
         return array($t, $return, $instance);
     }

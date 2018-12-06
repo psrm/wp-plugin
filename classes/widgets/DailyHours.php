@@ -2,16 +2,13 @@
 
 namespace psrm\widgets;
 
-use psrm\utils\Views;
-use psrm\PSRM;
+use psrm\utils\View;
 
 add_action( 'widgets_init', function(){
 	register_widget( 'psrm\widgets\DailyHours' );
 });
 
 class DailyHours extends \WP_Widget {
-	private $view;
-
 	function __construct() {
 		parent::__construct(
 			'daily_hours_widget',
@@ -20,8 +17,6 @@ class DailyHours extends \WP_Widget {
 				'description' => __( 'Display the day\'s hours.', 'psrm' ),
 			)
 		);
-
-		$this->view = new Views( PSRM::$views );
 	}
 
 	function widget( $args, $instance ) {
@@ -73,7 +68,7 @@ class DailyHours extends \WP_Widget {
                     $open_hours = 'currently <p class="museum-status museum-closed">CLOSED</p> until ' . \psrm\controllers\GooglePlaces::$dowMap[$day->open->day] . ': ' . date('g:i a', strtotime($day->open->time)) . ' - ' . date('g:i a', strtotime($day->close->time));
                 }
             }
-			echo $this->view->render( 'daily-hours', [
+			echo new View( 'daily-hours', [
 				'args'     => $args,
 				'instance' => $instance,
 				'open_hours'  => $open_hours
