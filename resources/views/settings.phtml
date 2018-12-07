@@ -4,7 +4,7 @@
 /** @var string $pageSlug */
 /** @var mixed $vars */
 /** @var psrm\models\Settings $settingsModel */
-/** @var psrm\utils\Views $view */
+/** @var psrm\utils\View $view */
 ?>
 
 <div class="wrap">
@@ -26,8 +26,8 @@
 
 		<?php
 			settings_fields($settingsModel->getSettingsKey());
-			echo $view->render('settings-' . $current_tab, $vars);
-		?>
+			echo $view;
+        ?>
 
 	</form>
 

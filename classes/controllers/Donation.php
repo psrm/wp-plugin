@@ -3,28 +3,26 @@
 namespace psrm\controllers;
 
 use psrm\PSRM;
-use psrm\utils\Views;
+use psrm\utils\View;
 use psrm\models\Donation as DonationSettings;
 
 class Donation {
 	protected $settings;
-	protected $view;
 
 	public function __construct() {
 		$this->settings = DonationSettings::load();
-		$this->view     = new Views( PSRM::$views );
 		add_shortcode( PSRM::$slug . '-donation-form', [ $this, 'display_donation_form' ] );
 		add_action( 'wp_ajax_process_donation', [ $this, 'process_donation' ] );
 		add_action( 'wp_ajax_nopriv_process_donation', [ $this, 'process_donation' ] );
 	}
 
 	public function display_donation_form() {
-		return $this->view->render( 'donation-form', array(
+		return new View('donation-form', array(
 			'donation_amounts'      => $this->settings->getOption(DonationSettings::DonationAmounts, DonationSettings::Group),
 			'donation_funds'        => $this->settings->getOption(DonationSettings::DonationFunds, DonationSettings::Group),
 			'allow_custom_amount'   => $this->settings->getOption(DonationSettings::AllowCustomAmountOptionName, DonationSettings::Group),
 			'custom_donation_floor' => $this->settings->getOption(DonationSettings::CustomAmountFloorOptionName, DonationSettings::Group)
-		) );
+		));
 	}
 
 	public function process_donation() {
@@ -65,19 +63,19 @@ class Donation {
 					'Successful donation! View this transaction in Stripe: ' . $this->settings->getOption(DonationSettings::StripeDashboardUrlOptionName, DonationSettings::Group) . $response->id
 				);
 
-				echo $this->view->render('donation-successful-outcome', [
+				echo new View('donation-successful-outcome', [
 					'donationAmount' => $donation_amount,
 					'transactionId'  => $response->id,
 				]);
 			} catch ( \Exception $e ) {
-				echo $this->view->render('donation-failed-outcome', [
+				echo new View('donation-failed-outcome', [
 					'message'      => 'There was an error.',
 					'responseText' => $e->getMessage()
 				]);
 			}
 
 		} else {
-			echo $this->view->render('donation-failed-outcome', [
+			echo new View('donation-failed-outcome', [
 				'message'      => 'Form validation failed. Correct the errors and resubmit.',
 				'responseText' => $data[ 'result' ]
 			]);

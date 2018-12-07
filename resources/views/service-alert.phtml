@@ -1,4 +1,7 @@
-<?php if ($service_alert->have_posts()): ?>
+<?php
+    /** @var \WP_Query $service_alert */
+    if ($service_alert->have_posts()):
+?>
 
     <div class="psrm-service-alerts" id="psrm-service-marquee">
         <ul>

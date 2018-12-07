@@ -3,18 +3,16 @@
 namespace psrm\controllers;
 
 use psrm\models\Settings as SettingsModel;
-use psrm\utils\Views;
+use psrm\utils\View;
 use psrm\PSRM;
 
 class Settings
 {
 	private $model;
-	private $view;
 
 	function __construct()
 	{
 		$this->model = SettingsModel::load();
-		$this->view = new Views(PSRM::$views);
 
 		add_action('admin_init', array($this, 'admin_init'));
 		add_action('admin_menu', array($this, 'admin_menu'));
@@ -41,17 +39,13 @@ class Settings
 
 	function add_menu_page_callback()
 	{
-		$vars = array();
-
-		$tabs = $this->getOptionTabsVars();
-		$vars = array_merge( $tabs, $vars );
-
+		$vars = $this->getOptionTabsVars();
 		$vars['pageSlug']      = PSRM::$slug;
 		$vars['pageTitle']     = PSRM::NAME . ' | Settings';
 		$vars['settingsModel'] = $this->model;
-		$vars['view']          = $this->view;
+		$vars['view']          = new View('settings-' . $vars['current_tab'], $vars);
 
-		echo $this->view->render( 'settings', $vars );
+		echo new View('settings', $vars);
 	}
 
 	function getOptionTabsVars()
