@@ -105,7 +105,7 @@ class ExtraPostHeadersAndFooters
 	 */
 	public function saveMetaBoxes($postID)
 	{
-		if ($_POST['post_type'] == 'page') {
+		if (isset($_POST['post_type']) && $_POST['post_type'] == 'page') {
 			if (!current_user_can('edit_page', $postID)) {
 				return $postID;
 			}
