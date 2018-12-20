@@ -71,7 +71,6 @@ jQuery( function ( $ ) {
                 description: 'Donate $' + donation_amount,
                 zipCode: true,
                 billingAddress: true,
-                bitcoin: true,
                 amount: donation_amount * 100
             } );
         } else {
