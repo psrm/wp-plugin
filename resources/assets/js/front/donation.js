@@ -48,8 +48,8 @@ jQuery( function ( $ ) {
         donation_button_error.empty();
 
         if ( typeof donation_form.val() !== 'undefined' ) {
-            if ( donation_form.val() == 'custom' ) {
-                var donation_amount = $( '#custom_amount' ).val();
+            var donation_amount;
+            if ( donation_form.val() === 'custom' ) {
                 var $customAmount = $('#custom_amount');
                 donation_amount = parseInt($customAmount.val(), 10);
 
@@ -63,7 +63,7 @@ jQuery( function ( $ ) {
                     return;
                 }
             } else {
-                var donation_amount = donation_form.attr( 'data-amount' );
+                donation_amount = donation_form.attr( 'data-amount' );
             }
             // Open Checkout with further options
             handler.open( {
