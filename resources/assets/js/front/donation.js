@@ -57,6 +57,11 @@ jQuery( function ( $ ) {
                     donation_button_error.text('Donation amount must be at least $' + psrm.donation_amount_floor);
                     return;
                 }
+
+                if (donation_amount !== parseFloat($customAmount.val())) {
+                    donation_button_error.text('Amount must be in whole dollars.');
+                    return;
+                }
             } else {
                 var donation_amount = donation_form.attr( 'data-amount' );
             }
