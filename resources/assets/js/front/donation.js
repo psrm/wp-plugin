@@ -21,7 +21,7 @@ jQuery( function ( $ ) {
                         stripeToken: token.id,
                         email: token.email
                     },
-                    customAmount = $( '#custom_amount' ).val();
+                    customAmount = parseInt($('#custom_amount').val(), 10);
 
                 if ( customAmount ) {
                     args.customAmount = customAmount;
@@ -50,8 +50,10 @@ jQuery( function ( $ ) {
         if ( typeof donation_form.val() !== 'undefined' ) {
             if ( donation_form.val() == 'custom' ) {
                 var donation_amount = $( '#custom_amount' ).val();
+                var $customAmount = $('#custom_amount');
+                donation_amount = parseInt($customAmount.val(), 10);
 
-                if (donation_amount < psrm.donation_amount_floor) {
+                if (donation_amount < parseInt(psrm.donation_amount_floor, 10)) {
                     donation_button_error.text('Donation amount must be at least $' + psrm.donation_amount_floor);
                     return;
                 }
