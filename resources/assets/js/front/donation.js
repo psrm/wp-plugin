@@ -1,6 +1,6 @@
 jQuery( function ( $ ) {
     $( '.donation_amount_form' ).change( function () {
-        if ( $( this ).val() == 'custom' ) {
+        if ( $( this ).val() === 'custom' ) {
             $( '.custom-donation-group' ).removeClass( 'hidden' );
         } else {
             $( '.custom-donation-group' ).addClass( 'hidden' );
