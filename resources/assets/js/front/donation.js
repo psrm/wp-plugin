@@ -1,6 +1,6 @@
 jQuery( function ( $ ) {
     $( '.donation_amount_form' ).change( function () {
-        if ( $( this ).val() == 'custom' ) {
+        if ( $( this ).val() === 'custom' ) {
             $( '.custom-donation-group' ).removeClass( 'hidden' );
         } else {
             $( '.custom-donation-group' ).addClass( 'hidden' );
@@ -21,7 +21,7 @@ jQuery( function ( $ ) {
                         stripeToken: token.id,
                         email: token.email
                     },
-                    customAmount = $( '#custom_amount' ).val();
+                    customAmount = parseInt($('#custom_amount').val(), 10);
 
                 if ( customAmount ) {
                     args.customAmount = customAmount;
@@ -48,15 +48,22 @@ jQuery( function ( $ ) {
         donation_button_error.empty();
 
         if ( typeof donation_form.val() !== 'undefined' ) {
-            if ( donation_form.val() == 'custom' ) {
-                var donation_amount = $( '#custom_amount' ).val();
+            var donation_amount;
+            if ( donation_form.val() === 'custom' ) {
+                var $customAmount = $('#custom_amount');
+                donation_amount = parseInt($customAmount.val(), 10);
 
-                if (donation_amount < psrm.donation_amount_floor) {
+                if (donation_amount < parseInt(psrm.donation_amount_floor, 10)) {
                     donation_button_error.text('Donation amount must be at least $' + psrm.donation_amount_floor);
                     return;
                 }
+
+                if (donation_amount !== parseFloat($customAmount.val())) {
+                    donation_button_error.text('Amount must be in whole dollars.');
+                    return;
+                }
             } else {
-                var donation_amount = donation_form.attr( 'data-amount' );
+                donation_amount = donation_form.attr( 'data-amount' );
             }
             // Open Checkout with further options
             handler.open( {
@@ -64,7 +71,6 @@ jQuery( function ( $ ) {
                 description: 'Donate $' + donation_amount,
                 zipCode: true,
                 billingAddress: true,
-                bitcoin: true,
                 amount: donation_amount * 100
             } );
         } else {

@@ -92,7 +92,7 @@ class Donation {
 		$gump->validation_rules( [
 			'amount'       => 'required',
 			'fund'         => 'required',
-			'customAmount' => 'numeric|min_numeric,' . $donation_min,
+			'customAmount' => 'integer|min_numeric,' . $donation_min,
 			'email'        => 'required|valid_email',
 			'stripeToken'  => 'required'
 		] );
