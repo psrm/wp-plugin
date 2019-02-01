@@ -4,5 +4,10 @@
     "php-curl-class/php-curl-class": "~3.5",
     "wixel/gump": "dev-master",
     "google/recaptcha": "~1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "psrm\\": "classes"
+    }
   }
 }

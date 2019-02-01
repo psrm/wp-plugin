@@ -5,6 +5,8 @@ Plugin Name:    PSRM Plugin
 
 namespace psrm;
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 use psrm\models\Donation;
 use psrm\models\Settings;
 
@@ -63,8 +65,6 @@ class PSRM
 
 	function initPlugin()
 	{
-		require_once('autoload.php');
-
 		add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueueAdminScripts' ] );
 
