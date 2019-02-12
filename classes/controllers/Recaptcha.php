@@ -13,9 +13,9 @@ class Recaptcha {
 		$this->settings = Settings::load();
 
 		if (defined('WP_DEVELOPMENT') && !WP_DEVELOPMENT) {
-			add_action('login_enqueue_scripts', [$this, 'enqueuerecaptchascript']);
-			add_filter('wp_authenticate_user', [$this, 'authenticatewithcaptcha'], 10, 2);
-			add_action('login_form', [$this, 'displaycaptcha']);
+			add_action('login_enqueue_scripts', [$this, 'enqueueRecaptchaScript']);
+			add_filter('wp_authenticate_user', [$this, 'authenticateWithCaptcha'], 10, 2);
+			add_action('login_form', [$this, 'displayCaptcha']);
 		}
 	}
 
