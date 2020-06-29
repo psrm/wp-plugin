@@ -12,13 +12,11 @@ class Settings {
 
 	const DonationGroup = 'donations';
 	const GooglePlacesGroup = 'google-places';
-	const RecaptchaGroup = 'recaptcha';
 	const DevelopmentGroup = 'development';
 
 	protected $optionGroups = array(
 		self::DonationGroup     => 'Donations',
 		self::GooglePlacesGroup => 'Google Places',
-		self::RecaptchaGroup    => 'reCAPTCHA',
 	);
 
 	// All loaded settings
