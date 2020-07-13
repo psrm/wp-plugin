@@ -1,0 +1,25 @@
+.psrm-settings ul.donation-amounts li {
+  font-size: 1.25rem;
+  margin: 20px; }
+  .psrm-settings ul.donation-amounts li .drag-handle {
+    margin-right: 2%; }
+    .psrm-settings ul.donation-amounts li .drag-handle:hover {
+      cursor: move;
+      cursor: -webkit-grabbing; }
+  .psrm-settings ul.donation-amounts li .js-remove {
+    font-size: .5rem; }
+    .psrm-settings ul.donation-amounts li .js-remove:hover {
+      cursor: pointer; }
+
+.psrm-settings ul.donation-amounts li {
+  font-size: 1.25rem;
+  margin: 20px; }
+  .psrm-settings ul.donation-amounts li .drag-handle {
+    margin-right: 2%; }
+    .psrm-settings ul.donation-amounts li .drag-handle:hover {
+      cursor: move;
+      cursor: -webkit-grabbing; }
+  .psrm-settings ul.donation-amounts li .js-remove {
+    font-size: .5rem; }
+    .psrm-settings ul.donation-amounts li .js-remove:hover {
+      cursor: pointer; }
