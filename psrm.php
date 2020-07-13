@@ -100,6 +100,7 @@ class PSRM
 
 	public function enqueueAdminScripts() {
 		wp_enqueue_style( self::$slug . '-plugin-admin-styles', self::$styles . '/admin.css', [ ], '1468126460' );
+		wp_enqueue_script( self::$slug . '-plugin-admin-sortable', self::$scripts . '/sortable.js', [ 'jquery' ], '1594614722' );
 		wp_enqueue_script( self::$slug . '-plugin-admin-scripts', self::$scripts . '/admin.js', [ 'jquery' ], '1468126460' );
 	}
 
