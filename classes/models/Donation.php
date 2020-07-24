@@ -13,4 +13,6 @@ class Donation extends Settings {
 	const StripeDashboardUrlOptionName = 'stripe_dashboard_url';
 	const DonationAmounts = 'donation_amounts';
 	const DonationFunds = 'donation_funds';
+	const DonationRedirectSuccess = 'donation_redirect_success';
+	const DonationRedirectCancel = 'donation_redirect_cancel';
 }

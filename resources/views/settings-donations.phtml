@@ -50,6 +50,28 @@
 
 	</tr>
 
+    <tr>
+        <th scope="row"><label for="donation-redirect-success">Donation success redirect URL</label></th>
+
+        <td>
+            <input type='text' class='regular-text' id='donation-redirect-success' value='<?php echo $settingsModel->getOption('donation_redirect_success', $current_tab) ?>'
+                   name='<?php echo $settingsModel->getInputName('donation_redirect_success', $current_tab) ?>' />
+
+        </td>
+
+    </tr>
+
+    <tr>
+        <th scope="row"><label for="donation-redirect-cancel">Donation cancel redirect URL</label></th>
+
+        <td>
+            <input type='text' class='regular-text' id='donation-redirect-cancel' value='<?php echo $settingsModel->getOption('donation_redirect_cancel', $current_tab) ?>'
+                   name='<?php echo $settingsModel->getInputName('donation_redirect_cancel', $current_tab) ?>' />
+
+        </td>
+
+    </tr>
+
 </table>
 
 	<h3>Donation Amounts</h3>
