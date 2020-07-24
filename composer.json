@@ -1,7 +1,8 @@
 {
   "require": {
-    "stripe/stripe-php": "3.*",
-    "wixel/gump": "dev-master"
+    "stripe/stripe-php": "7.40.*",
+    "wixel/gump": "1.11.*",
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {
