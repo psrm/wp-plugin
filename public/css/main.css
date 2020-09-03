@@ -1,0 +1,81 @@
+.psrm-service-alerts {
+  background-color: red;
+  font-size: 2.1rem;
+  text-align: center;
+  margin-bottom: 5px; }
+  .psrm-service-alerts ul {
+    position: relative !important; }
+  .psrm-service-alerts li {
+    list-style: none; }
+  .psrm-service-alerts a {
+    color: white; }
+
+.daily-hours {
+  text-align: center;
+  font-size: 2rem; }
+  .daily-hours .museum-status {
+    font-size: 3rem;
+    font-weight: bold; }
+    .daily-hours .museum-status.museum-open {
+      color: green; }
+    .daily-hours .museum-status.museum-closed {
+      color: red; }
+
+.gump-error-message {
+  display: block;
+  margin: 10px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: red; }
+
+.donation-form .donation-amount-input {
+  padding-right: 0; }
+
+.donation-modal {
+  color: #000; }
+  .donation-modal .modal-body {
+    font-size: 2rem; }
+
+.donation_fund {
+  color: #000; }
+
+.daily-hours {
+  text-align: center;
+  font-size: 2rem; }
+  .daily-hours .museum-status {
+    font-size: 3rem;
+    font-weight: bold; }
+    .daily-hours .museum-status.museum-open {
+      color: green; }
+    .daily-hours .museum-status.museum-closed {
+      color: red; }
+
+.gump-error-message {
+  display: block;
+  margin: 10px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: red; }
+
+.donation-form .donation-amount-input {
+  padding-right: 0; }
+
+.donation-modal {
+  color: #000; }
+  .donation-modal .modal-body {
+    font-size: 2rem; }
+
+.donation_fund {
+  color: #000; }
+
+.psrm-service-alerts {
+  background-color: red;
+  font-size: 2.1rem;
+  text-align: center;
+  margin-bottom: 5px; }
+  .psrm-service-alerts ul {
+    position: relative !important; }
+  .psrm-service-alerts li {
+    list-style: none; }
+  .psrm-service-alerts a {
+    color: white; }

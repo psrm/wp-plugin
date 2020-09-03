@@ -23,7 +23,8 @@
 		<?php foreach ( $donation_amounts as $key => $amount ): ?>
 			<div class="col-sm-4 donation-amount-input">
 				<input type="radio" class="donation_amount_form" id="amount<?php echo $key; ?>"
-				       name="amount"
+				       <?php if($key === array_key_first($donation_amounts)): ?> checked <?php endif; ?>
+                       name="amount"
 				       data-amount="<?php echo $amount; ?>"
 				       value="<?php echo $key; ?>">&nbsp;<label
 					for="amount<?php echo $key; ?>">$<?php echo $amount; ?></label>
@@ -40,9 +41,12 @@
 			<div class="input-group-addon">USD</div>
 		</div>
 	<?php endif; ?>
+    <div class="input-group">
+    <input type="checkbox" checked id="pay_fees" name="pay_fees"/>
+    <label for="pay_fees">&nbsp;Pay the processing fee</label>
+    </div>
 </div>
 <div class="donate-button-error"></div>
 <button type="button" class="btn btn-primary btn-lg donation-button">
-	Donate Today
+	Donate
 </button>
-<script type="text/javascript" src="https://checkout.stripe.com/checkout.js"></script>

@@ -4,32 +4,34 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "201f7d644a88cc27c1965f6706a0d9d5",
+    "content-hash": "d3591213bd93d4426d06aca6ed5284ac",
     "packages": [
         {
             "name": "stripe/stripe-php",
-            "version": "v3.15.0",
+            "version": "v7.40.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "6bc921a03af31387ef3f0a1fc233d432315ecb3a"
+                "reference": "04aedea5ad95b9722aa394a41787751b2b478310"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/6bc921a03af31387ef3f0a1fc233d432315ecb3a",
-                "reference": "6bc921a03af31387ef3f0a1fc233d432315ecb3a",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/04aedea5ad95b9722aa394a41787751b2b478310",
+                "reference": "04aedea5ad95b9722aa394a41787751b2b478310",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "php": ">=5.3.3"
+                "php": ">=5.6.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0",
-                "satooshi/php-coveralls": "~0.6.1",
-                "squizlabs/php_codesniffer": "~2.0"
+                "friendsofphp/php-cs-fixer": "2.16.1",
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^5.7",
+                "squizlabs/php_codesniffer": "^3.3",
+                "symfony/process": "~3.4"
             },
             "type": "library",
             "extra": {
@@ -59,27 +61,42 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2016-06-29T21:32:55+00:00"
+            "time": "2020-07-06T17:51:30+00:00"
         },
         {
             "name": "wixel/gump",
-            "version": "dev-master",
+            "version": "v1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Wixel/GUMP.git",
-                "reference": "34792ec8ff9a8caf3f1a859203baed74c509dc46"
+                "reference": "becdf2e7941ba56171063de81dd1c2100fa496f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Wixel/GUMP/zipball/34792ec8ff9a8caf3f1a859203baed74c509dc46",
-                "reference": "34792ec8ff9a8caf3f1a859203baed74c509dc46",
+                "url": "https://api.github.com/repos/Wixel/GUMP/zipball/becdf2e7941ba56171063de81dd1c2100fa496f6",
+                "reference": "becdf2e7941ba56171063de81dd1c2100fa496f6",
                 "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "kamermans/docblock-reflection": "^1.0",
+                "maddhatter/markdown-table": "^1.0",
+                "mockery/mockery": "^1.3",
+                "php-coveralls/php-coveralls": "^2.2",
+                "phpunit/phpunit": "^6"
             },
             "type": "library",
             "autoload": {
                 "files": [
                     "gump.class.php"
-                ]
+                ],
+                "psr-4": {
+                    "GUMP\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -87,48 +104,33 @@
             ],
             "authors": [
                 {
-                    "name": "Colleen Emryss",
-                    "homepage": "http://skitter.tv"
-                },
-                {
-                    "name": "Mark Slingsby",
-                    "homepage": "http://www.rsaweb.co.za"
-                },
-                {
-                    "name": "Roy de Kleijn",
-                    "homepage": "http://roydekleijn.com"
-                },
-                {
-                    "name": "Christian Klisch",
-                    "homepage": "http://www.christian-klisch.de/"
-                },
-                {
-                    "name": "Inge Brattaas",
-                    "homepage": "http://res.no/"
-                },
-                {
-                    "name": "Rob Crowe",
-                    "homepage": "http://vivalacrowe.com"
-                },
-                {
                     "name": "Sean Nieuwoudt",
                     "homepage": "https://wixelhq.com"
+                },
+                {
+                    "name": "Filis Futsarov",
+                    "homepage": "https://filis.me"
                 }
             ],
-            "description": "A fast, extensible & stand-alone PHP input validation class that allows you to validate any data",
+            "description": "A fast, extensible & stand-alone PHP input validation class that allows you to validate any data.",
             "homepage": "https://wixelhq.com/",
-            "time": "2016-06-04T09:22:30+00:00"
+            "keywords": [
+                "validate",
+                "validation",
+                "validator"
+            ],
+            "time": "2020-03-17T20:10:57+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "wixel/gump": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-json": "*"
+    },
     "platform-dev": [],
     "plugin-api-version": "1.1.0"
 }

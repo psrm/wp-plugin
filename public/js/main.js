@@ -224,3 +224,91 @@
         }
     };
 })(jQuery);
+jQuery(function($){
+    $('form').submit(function(){
+        var button = $('input[type="submit"][clicked="true"]');
+        button.prop('disabled', true);
+        button.val('Submitting...');
+        return true;
+    });
+
+    $("form input[type=submit]").click(function() {
+        $("input[type=submit]", $(this).parents("form")).removeAttr("clicked");
+        $(this).attr("clicked", "true");
+    });
+});
+jQuery( function ( $ ) {
+    $( '.donation_amount_form' ).change( function () {
+        if ( $( this ).val() === 'custom' ) {
+            $( '.custom-donation-group' ).removeClass( 'hidden' );
+        } else {
+            $( '.custom-donation-group' ).addClass( 'hidden' );
+        }
+    } );
+
+    $( '.donation-button' ).on( 'click', function ( e ) {
+        var donation_form = $( '.donation_amount_form:checked' ),
+            donation_button_error = $( '.donate-button-error' );
+
+        donation_button_error.empty();
+
+        if ( typeof donation_form.val() !== 'undefined' ) {
+            var donation_amount;
+            if ( donation_form.val() === 'custom' ) {
+                var $customAmount = $('#custom_amount');
+                donation_amount = parseInt($customAmount.val(), 10);
+
+                if (donation_amount < parseInt(psrm.donation_amount_floor, 10)) {
+                    donation_button_error.text('Donation amount must be at least $' + psrm.donation_amount_floor);
+                    return;
+                }
+
+                if (donation_amount !== parseFloat($customAmount.val())) {
+                    donation_button_error.text('Amount must be in whole dollars.');
+                    return;
+                }
+            } else {
+                donation_amount = donation_form.attr( 'data-amount' );
+            }
+            // Redirect to Checkout
+            let args = {
+                    action: 'process_donation',
+                    amount: $( '.donation_amount_form:checked' ).val(),
+                    fund: $( '.donation_fund' ).val(),
+                    subscription: $('#subscription').is(":checked"),
+                    pay_fees: $('#pay_fees').is(":checked")
+                };
+                let customAmount = donation_amount
+
+            if ( customAmount ) {
+                args.customAmount = customAmount;
+            }
+            $.post(
+                psrm.ajaxurl,
+                args,
+                function ( data ) {
+                    let stripe = Stripe(psrm.stripe_pk);
+                    let response = JSON.parse(data);
+                    stripe.redirectToCheckout({
+                        sessionId: response.session_id,
+                    }).then(function (result) {
+                        donation_button_error.text(result.error.message);
+                    });
+                }
+            )
+                .fail(function(data){
+                    let response = JSON.parse(data.responseText);
+                    donation_button_error.text(response.message);
+                });
+        } else {
+            donation_button_error.text( 'Select a donation amount first.' );
+        }
+        e.preventDefault();
+    } );
+} );
+jQuery(document).ready(function($){
+    var serviceAlerts = $('.psrm-service-alerts');
+    if(serviceAlerts.length) {
+        serviceAlerts.vTicker();
+    }
+});

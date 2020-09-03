@@ -87,7 +87,8 @@ class PSRM
 
 		wp_enqueue_style(self::$slug . '-plugin-styles', self::$styles . '/main.css', [], '1468126460');
 
-		wp_register_script(self::$slug . '-plugin-scripts', self::$scripts . '/main.js', ['jquery'], '1545284377');
+		wp_enqueue_script('stripe-checkout', 'https://js.stripe.com/v3/');
+		wp_register_script(self::$slug . '-plugin-scripts', self::$scripts . '/main.js', ['jquery', 'stripe-checkout'], '1595630425');
 		wp_localize_script( self::$slug . '-plugin-scripts', 'psrm', [
 			'ajaxurl'   => admin_url( 'admin-ajax.php' ),
 			'name'      => get_bloginfo( 'name' ),
@@ -100,6 +101,7 @@ class PSRM
 
 	public function enqueueAdminScripts() {
 		wp_enqueue_style( self::$slug . '-plugin-admin-styles', self::$styles . '/admin.css', [ ], '1468126460' );
+		wp_enqueue_script( self::$slug . '-plugin-admin-sortable', self::$scripts . '/sortable.js', [ 'jquery' ], '1594614722' );
 		wp_enqueue_script( self::$slug . '-plugin-admin-scripts', self::$scripts . '/admin.js', [ 'jquery' ], '1468126460' );
 	}
 
