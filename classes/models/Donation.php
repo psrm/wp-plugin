@@ -6,6 +6,7 @@ class Donation extends Settings {
 	const Group = 'donations';
 	const StripeSecretKeyOptionName = 'stripe_secret_key';
 	const StripePublicKeyOptionName = 'stripe_public_key';
+	const StripeWebhookSigningSecret = 'stripe_webhook_signing_secret';
 	const CheckoutImageUrlOptionName = 'checkout_image_url';
 	const AllowCustomAmountOptionName = 'allow_custom_amount';
 	const CustomAmountFloorOptionName = 'custom_donation_floor';

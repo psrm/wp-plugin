@@ -28,6 +28,17 @@
 
 	</tr>
 
+    <tr>
+        <th scope="row"><label for="stripe-webhook-signing-secret">Webhook Signing Secret</label></th>
+
+        <td>
+            <input type='text' class='regular-text' id='stripe-webhook-signing-secret' value='<?php echo $settingsModel->getOption('stripe_webhook_signing_secret', $current_tab) ?>'
+                   name='<?php echo $settingsModel->getInputName('stripe_webhook_signing_secret', $current_tab) ?>' />
+
+        </td>
+
+    </tr>
+
 	<tr>
 		<th scope="row"><label for="checkout-image-url">Checkout Image URL</label></th>
 

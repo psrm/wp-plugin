@@ -275,10 +275,10 @@ jQuery( function ( $ ) {
                     action: 'process_donation',
                     amount: $( '.donation_amount_form:checked' ).val(),
                     fund: $( '.donation_fund' ).val(),
-                    stripeToken: token.id,
-                    email: token.email
+                    subscription: $('#subscription').is(":checked"),
+                    pay_fees: $('#pay_fees').is(":checked")
                 };
-                let customAmount = parseInt($('#custom_amount').val(), 10);
+                let customAmount = donation_amount
 
             if ( customAmount ) {
                 args.customAmount = customAmount;
@@ -287,9 +287,19 @@ jQuery( function ( $ ) {
                 psrm.ajaxurl,
                 args,
                 function ( data ) {
-                    // TODO redirect to Checkout
+                    let stripe = Stripe(psrm.stripe_pk);
+                    let response = JSON.parse(data);
+                    stripe.redirectToCheckout({
+                        sessionId: response.session_id,
+                    }).then(function (result) {
+                        donation_button_error.text(result.error.message);
+                    });
                 }
-            );
+            )
+                .fail(function(data){
+                    let response = JSON.parse(data.responseText);
+                    donation_button_error.text(response.message);
+                });
         } else {
             donation_button_error.text( 'Select a donation amount first.' );
         }
