@@ -1,113 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "4b19c549cb892aefbd6465cda2a3c5db",
-    "content-hash": "0f55a6ba8f880ac7436019fd9b54c1b0",
+    "content-hash": "201f7d644a88cc27c1965f6706a0d9d5",
     "packages": [
-        {
-            "name": "google/recaptcha",
-            "version": "1.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/google/recaptcha.git",
-                "reference": "2b7e00566afca82a38a1d3adb8e42c118006296e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/google/recaptcha/zipball/2b7e00566afca82a38a1d3adb8e42c118006296e",
-                "reference": "2b7e00566afca82a38a1d3adb8e42c118006296e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.5.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "ReCaptcha\\": "src/ReCaptcha"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Client library for reCAPTCHA, a free service that protect websites from spam and abuse.",
-            "homepage": "http://www.google.com/recaptcha/",
-            "keywords": [
-                "Abuse",
-                "captcha",
-                "recaptcha",
-                "spam"
-            ],
-            "time": "2015-09-02 17:23:59"
-        },
-        {
-            "name": "php-curl-class/php-curl-class",
-            "version": "3.6.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-curl-class/php-curl-class.git",
-                "reference": "f26db010d5cd038417290b8daf4c45e12d473b4a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/f26db010d5cd038417290b8daf4c45e12d473b4a",
-                "reference": "f26db010d5cd038417290b8daf4c45e12d473b4a",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Unlicense"
-            ],
-            "authors": [
-                {
-                    "name": "Zach Borboa"
-                }
-            ],
-            "description": "PHP Curl Class is an object-oriented wrapper of the PHP cURL extension.",
-            "homepage": "https://github.com/php-curl-class/php-curl-class",
-            "keywords": [
-                "api",
-                "class",
-                "client",
-                "curl",
-                "framework",
-                "http",
-                "http client",
-                "json",
-                "php",
-                "requests",
-                "rest",
-                "restful",
-                "web service",
-                "xml"
-            ],
-            "time": "2015-07-29 00:48:33"
-        },
         {
             "name": "stripe/stripe-php",
             "version": "v3.15.0",
@@ -161,7 +59,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2016-06-29 21:32:55"
+            "time": "2016-06-29T21:32:55+00:00"
         },
         {
             "name": "wixel/gump",
@@ -219,7 +117,7 @@
             ],
             "description": "A fast, extensible & stand-alone PHP input validation class that allows you to validate any data",
             "homepage": "https://wixelhq.com/",
-            "time": "2016-06-04 09:22:30"
+            "time": "2016-06-04T09:22:30+00:00"
         }
     ],
     "packages-dev": [],
@@ -231,5 +129,6 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

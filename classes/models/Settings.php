@@ -11,14 +11,10 @@ class Settings {
 	protected $optionGroupsKeys = array();
 
 	const DonationGroup = 'donations';
-	const GooglePlacesGroup = 'google-places';
-	const RecaptchaGroup = 'recaptcha';
 	const DevelopmentGroup = 'development';
 
 	protected $optionGroups = array(
 		self::DonationGroup     => 'Donations',
-		self::GooglePlacesGroup => 'Google Places',
-		self::RecaptchaGroup    => 'reCAPTCHA',
 	);
 
 	// All loaded settings
@@ -83,12 +79,8 @@ class Settings {
 		if ($this->optionGroupsKeys) {
 			if (!$optionGroupKey) {
 				trigger_error('$optionGroupKey is required.', E_USER_ERROR);
-
-				return;
 			} else if (!in_array($optionGroupKey, $this->optionGroupsKeys)) {
 				trigger_error('Option Group Key "' . $optionGroupKey . '" doesn\'t exist in ' . get_class($this) . '::optionGroupsKeys.', E_USER_ERROR);
-
-				return;
 			}
 
 			$this->settings[$optionGroupKey] = $newOptions;
